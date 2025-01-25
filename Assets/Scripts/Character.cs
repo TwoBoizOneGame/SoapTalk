@@ -16,6 +16,7 @@ public class Character : MonoBehaviour
 
     public Transform listeningEar;
     public Transform bubbleSpawnOffset;
+    public GameObject mesh;
 
     public void StartListening()
     {
@@ -29,11 +30,13 @@ public class Character : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.instance.currentState == GameState.Moving)
-        {
-            if (hearingArea.bounds.Contains(GameManager.instance.bubble.transform.position))
+        if (GameManager.instance != null) {
+            if (GameManager.instance.currentState == GameState.Moving)
             {
-                GameManager.instance.ValidateSentence();
+                if (hearingArea.bounds.Contains(GameManager.instance.bubble.transform.position))
+                {
+                    GameManager.instance.ValidateSentence();
+                }
             }
         }
     }
