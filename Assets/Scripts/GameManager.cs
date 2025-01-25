@@ -6,11 +6,14 @@ using Cysharp.Threading.Tasks;
 using Deform;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState { Initial, Blowing, Talking, Moving, Reached, GameOver }
 
 public class GameManager : MonoBehaviour
 {
+    const string HIGHSCORE_KEY = "highscore";
+
     static GameManager _instance;
     public static GameManager instance
     {
@@ -36,29 +39,44 @@ public class GameManager : MonoBehaviour
 
     public Character currentTalker;
     public Character currentListener;
-    public float movementSpeed = 1;
+    public float currentMovementSpeed = 1;
 
     public int currentScore = 0;
     public int maxHealth=5;
     public int currentHealth=5;
+    public int currentRound=1;
+
+    Vector3 currentListenerStartingPosition;
 
     void Start()
     {
         _instance = this;
         currentHealth=maxHealth;
         currentState = GameState.Initial;
+        currentRound=1;
+        currentListenerStartingPosition=currentListener.GetEndAreaOffset();
+        currentListener.SetupCharacter(CharacterRole.Listener);
+        currentTalker.SetupCharacter(CharacterRole.Talker);
         wordParser.LoadSentences();
         GameUI.instance.SetHeartCount(currentHealth);
+        GameUI.instance.UpdateScore(currentScore);
         SpawnBubble();
+
+#if UNITY_EDITOR
+        Debug.Log("Clearing up player prefs because we're running in the editor");
+        PlayerPrefs.DeleteAll();
+        #endif
     }
 
     void Update()
-    {
-        var totalLength = currentListener.transform.position-currentTalker.transform.position;
-        // GameUI.instance.progressSlider.value = 
+    {        
+        var currentProgress = ((currentListenerStartingPosition.x-currentListener.transform.position.x)/currentListenerStartingPosition.x);
+        var timeToEnd = currentListener.transform.position.x/currentMovementSpeed;
+
+        GameUI.instance.UpdateProgress(currentProgress, timeToEnd);
         if (currentState == GameState.Moving)
         {
-            environment.transform.position -= Vector3.right * movementSpeed * Time.deltaTime;
+            environment.transform.position -= Vector3.right * currentMovementSpeed * Time.deltaTime;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 50, Color.red, 5);
@@ -240,7 +258,12 @@ public class GameManager : MonoBehaviour
         currentTalker = currentListener;
         currentListener = temp;
         currentTalker.name = "Talker";
+        currentTalker.SetRole(CharacterRole.Talker);
         currentListener.name = "Listener";
+        currentListener.SetupCharacter(CharacterRole.Listener);
+        currentListenerStartingPosition=currentListener.GetEndAreaOffset();
+        currentRound++;
+        GameUI.instance.UpdateRoundNumber();
 
         SpawnBubble();
     }
@@ -258,6 +281,22 @@ public class GameManager : MonoBehaviour
     public void EndGame()
     {
         currentState=GameState.GameOver;
+        var maxScore = PlayerPrefs.GetInt(HIGHSCORE_KEY, 0);
+        if (currentScore > maxScore)
+        {
+            PlayerPrefs.SetInt(HIGHSCORE_KEY, currentScore);
+        }
+        GameUI.instance.ShowGameOverScreen(currentScore > maxScore);
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(1);
+    }
+    
+    public void Quit()
+    {
+        SceneManager.LoadScene(0);
     }
 
     void OnDrawGizmos()

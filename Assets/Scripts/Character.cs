@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 
+public enum CharacterRole { Talker, Listener };
+
 public class Character : MonoBehaviour
 {
     [SerializeField]
@@ -14,9 +16,24 @@ public class Character : MonoBehaviour
     [SerializeField]
     BoxCollider hearingArea;
 
+    public CharacterRole currentRole;
+
     public Transform listeningEar;
     public Transform bubbleSpawnOffset;
     public GameObject mesh;
+
+    public TalkerListener talkerListener;
+
+    public void SetupCharacter(CharacterRole role)
+    {
+        talkerListener.RandomGenerate();
+        SetRole(role);
+    }
+
+    public void SetRole(CharacterRole role)
+    {
+        currentRole=role;
+    }
 
     public void StartListening()
     {
@@ -28,14 +45,23 @@ public class Character : MonoBehaviour
         animator.SetTrigger(talkerTriggerName);
     }
 
+    public Vector3 GetEndAreaOffset()
+    {
+        return hearingArea.transform.position;
+    }
+
     void Update()
     {
         if (GameManager.instance != null) {
-            if (GameManager.instance.currentState == GameState.Moving)
+            if (currentRole == CharacterRole.Listener)
             {
-                if (hearingArea.bounds.Contains(GameManager.instance.bubble.transform.position))
+                if (GameManager.instance.currentState == GameState.Moving)
+            {
+                // if (hearingArea.bounds.Contains(GameManager.instance.bubble.transform.position))
+                    if (GetEndAreaOffset().x <= GameManager.instance.bubble.transform.position.x)
                 {
-                    GameManager.instance.ValidateSentence();
+                        GameManager.instance.ValidateSentence();
+                }
                 }
             }
         }

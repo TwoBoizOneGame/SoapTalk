@@ -24,6 +24,10 @@ public class GameUI : MonoBehaviour
     public TextMeshProUGUI roundText;
     public TextMeshProUGUI goText;
 
+    public GameObject gameOverPopup;
+    public TextMeshProUGUI gameOverPopupText;
+    public TextMeshProUGUI gameOverHighscoreText;
+
     void Awake()
     {
         _instance = this;
@@ -33,6 +37,18 @@ public class GameUI : MonoBehaviour
     {
         scoreText.text = $"Score: {score}";
         scoreText.transform.DOPunchScale(Vector3.one * 1.5f, .5f);
+    }
+
+    public void UpdateRoundNumber()
+    {
+        roundText.text = $"Round {GameManager.instance.currentRound}";
+        roundText.transform.DOPunchScale(Vector3.one*2, 1);
+    }
+
+    public void UpdateProgress(float value, float timeLeft)
+    {
+        progressSlider.value = value;
+        progressText.text = $"{Mathf.Round(timeLeft)} seconds";
     }
 
     public async UniTask ShowGoText()
@@ -66,5 +82,13 @@ public class GameUI : MonoBehaviour
                 Destroy(c.gameObject);
             }
         }
+    }
+
+    public void ShowGameOverScreen(bool isNewHighscore)
+    {
+        gameOverPopup.SetActive(true);
+        gameOverPopupText.text = $"Score {GameManager.instance.currentScore}";
+        gameOverHighscoreText.gameObject.SetActive(isNewHighscore);
+        gameOverHighscoreText.transform.DOPunchScale(Vector3.one*2, 1).SetLoops(3);
     }
 }
