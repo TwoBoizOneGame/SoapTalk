@@ -117,6 +117,16 @@ public class FaceAnim : StateMachineBehaviour
         DOTween.To(() => talkBlend1, (x) => talkBlend1 = x, 25, 0.25f);
         skinnedMeshRenderer.SetBlendShapeWeight(0, talkBlend1);
 
+        if (earBlendR < 100.0f)
+        {
+            earBlendR += Random.Range(0.5f, 2.5f);
+            skinnedMeshRenderer.SetBlendShapeWeight(3, earBlendR);
+        }
+        else
+        {
+            DOTween.To(() => earBlendR, (x) => earBlendR = x, 25, 0.5f);
+        }
+
         DOTween.To(() => tonqueBlend, (x) => tonqueBlend = x, 100, 2f);
         skinnedMeshRenderer.SetBlendShapeWeight(2, tonqueBlend);
     }
@@ -162,7 +172,6 @@ public class FaceAnim : StateMachineBehaviour
 
     public void ResetFace()
     {
-        skinnedMeshRenderer.SetBlendShapeWeight(2, 0);
         //DOTween.To(() => talkBlend1, (x) => talkBlend1 = x, 0, 0.1f);
         skinnedMeshRenderer.SetBlendShapeWeight(0, 100);
 
@@ -170,6 +179,7 @@ public class FaceAnim : StateMachineBehaviour
         skinnedMeshRenderer.SetBlendShapeWeight(1, 0);
 
         //DOTween.To(() => tonqueBlend, (z) => tonqueBlend = z, 0, 0.1f);
+        skinnedMeshRenderer.SetBlendShapeWeight(2, 0);
 
         //DOTween.To(() => earBlendR, (q) => earBlendR = q, 0, 0.1f);
         skinnedMeshRenderer.SetBlendShapeWeight(3, 0);
