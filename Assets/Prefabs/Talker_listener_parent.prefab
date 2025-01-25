@@ -221,9 +221,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mesh
       objectReference: {fileID: 0}
+    - target: {fileID: -5427938015905161020, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3142273768945192040, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1633315445507642783, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
       propertyPath: m_Name
       value: Talker_listener
+      objectReference: {fileID: 0}
+    - target: {fileID: 4400815386672767239, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8417361359673230750, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
       propertyPath: 'm_BlendShapeWeights.Array.data[0]'
@@ -254,8 +270,13 @@ PrefabInstance:
       addedObject: {fileID: 6595226513714401977}
     - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4110182749950865864}
+      addedObject: {fileID: 5971145555132543930}
   m_SourcePrefab: {fileID: 100100000, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
+--- !u!1 &2266924320876849983 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3142273768945192040, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
+  m_PrefabInstance: {fileID: 5409347685695133863}
+  m_PrefabAsset: {fileID: 0}
 --- !u!137 &4594133965985324345 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 8417361359673230750, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
@@ -266,7 +287,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: -8391222552659086748, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
   m_PrefabInstance: {fileID: 5409347685695133863}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4110182749950865864
+--- !u!114 &5971145555132543930
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -275,13 +296,50 @@ MonoBehaviour:
   m_GameObject: {fileID: 4656087061465574083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbc928a5e6172a041a482bf05e13aa0e, type: 3}
+  m_Script: {fileID: 11500000, guid: c3eca857be37cd64c9d76a4814fc8d5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skinnedMesh: {fileID: 4594133965985324345}
-  Eyes_normal: {fileID: 2100000, guid: 6aa9f6ec82cd20f4f91f8e0f32c2761e, type: 2}
-  Eyes_closed: {fileID: 2100000, guid: b3509a2d6b6b6244ca677eb1f60854da, type: 2}
-  timer: 0
+  blink_time: 0
+  Hairs:
+  - {fileID: 5958559547267882183}
+  - {fileID: 9204735509703882851}
+  - {fileID: 9204735509703882851}
+  - {fileID: 8503652927364446624}
+  - {fileID: 2266924320876849983}
+  Eyes:
+  - {fileID: 2100000, guid: 6aa9f6ec82cd20f4f91f8e0f32c2761e, type: 2}
+  - {fileID: 2100000, guid: bc33901db48fdfe49a163950d0b0e6b4, type: 2}
+  - {fileID: 2100000, guid: f144b5fbc7446af40b58570ea9c96dc0, type: 2}
+  - {fileID: 2100000, guid: 597a02d46bf68b84880bc666684f5fc7, type: 2}
+  - {fileID: 2100000, guid: 4806598dc814af546b92a074733a6e8d, type: 2}
+  Eyes_closed:
+  - {fileID: 2100000, guid: b3509a2d6b6b6244ca677eb1f60854da, type: 2}
+  - {fileID: 2100000, guid: 931a6774702b25a41bba38c0d0f65a6c, type: 2}
+  - {fileID: 2100000, guid: 6378ae4e073eff241be1b610a73918d6, type: 2}
+  - {fileID: 2100000, guid: 5b06f2ad8e32f234b975a813a3409230, type: 2}
+  - {fileID: 2100000, guid: 070567a87c0b9cb4881628dbc9123021, type: 2}
+  Skin:
+  - {fileID: 2100000, guid: 3ae9e56fb9996f14e80fbedd1e5c681a, type: 2}
+  - {fileID: 2100000, guid: 5f00086cdf0c28f4ab03fead8ea17431, type: 2}
+  - {fileID: 2100000, guid: e037ce08bdcd67f4a89b606b9950265e, type: 2}
+  - {fileID: 2100000, guid: bb10e4460d958a14786e28a961f4e127, type: 2}
+  - {fileID: 2100000, guid: 1e90dfeb8eecec244a158c9ceb3b445a, type: 2}
+  Shirt:
+  - {fileID: 2100000, guid: c983bff434227b94bab8be1537ec040d, type: 2}
+  - {fileID: 2100000, guid: ea8c7d37530f38443ad49941d1be58d5, type: 2}
+  - {fileID: 2100000, guid: e65ee240f76883446b03f91600c584ce, type: 2}
+  - {fileID: 2100000, guid: 364811f9463594b4e9fe2b6ade7a0935, type: 2}
+  - {fileID: 2100000, guid: 024cca0deccd7944392169a0c50c62f9, type: 2}
+  Hair:
+  - {fileID: 2100000, guid: f2631bcd37e368044af5cd035cfc402e, type: 2}
+  - {fileID: 2100000, guid: 9b5ada4ef4ed2f447a2d6e2680ec9a34, type: 2}
+  - {fileID: 2100000, guid: 77274760595c9aa448a9e7b52f8d9afb, type: 2}
+  - {fileID: 2100000, guid: 18f58a31cab3ee2419db471559f58347, type: 2}
+  - {fileID: 2100000, guid: a31b3890fcb90b640b048bd7a6ea4059, type: 2}
+  materials: []
+  rand_skin: 0
+  rand_hair: 0
 --- !u!1 &5174834839781484022 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
@@ -312,5 +370,20 @@ Animator:
 --- !u!4 &5520116209444323148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
+  m_PrefabInstance: {fileID: 5409347685695133863}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5958559547267882183 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1846708229843354720, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
+  m_PrefabInstance: {fileID: 5409347685695133863}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8503652927364446624 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4400815386672767239, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
+  m_PrefabInstance: {fileID: 5409347685695133863}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9204735509703882851 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5427938015905161020, guid: a2fb270ef22827d43bc92db2607d8af6, type: 3}
   m_PrefabInstance: {fileID: 5409347685695133863}
   m_PrefabAsset: {fileID: 0}
