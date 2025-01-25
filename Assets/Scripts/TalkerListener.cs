@@ -34,10 +34,10 @@ public class TalkerListener : MonoBehaviour
     {
         materials = skinnedMesh.materials;
 
-        rand_skin = Random.Range(0, 4);
+        rand_skin = Random.Range(0, 5);
         materials[0] = Skin[rand_skin];
-        materials[1] = Shirt[Random.Range(0, 4)];
-        materials[2] = Hair[Random.Range(0, 4)];
+        materials[1] = Shirt[Random.Range(0, 5)];
+        materials[2] = Hair[Random.Range(0, 5)];
         materials[3] = Eyes[rand_skin];
 
         for (int i = 0; i < Hairs.Length; i++)
@@ -45,7 +45,7 @@ public class TalkerListener : MonoBehaviour
             Hairs[i].SetActive(false);
         }
 
-        rand_hair = Random.Range(0, 4);
+        rand_hair = Random.Range(0, 5);
         Hairs[rand_hair].SetActive(true);
         Hairs[rand_hair].GetComponent<SkinnedMeshRenderer>().material = materials[2];
 
