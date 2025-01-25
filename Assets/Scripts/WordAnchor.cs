@@ -10,5 +10,6 @@ public class WordAnchor : MonoBehaviour
     public Material hoverMaterial;
 
     public Word currentlyHeldWord;
+    public string targetText;
 
 }

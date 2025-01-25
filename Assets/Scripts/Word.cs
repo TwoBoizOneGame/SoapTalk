@@ -20,7 +20,7 @@ public class Word : MonoBehaviour
 
     public void Setup(string word)
     {
-        textMesh.text = word;
+        textMesh.text = word;        
         boxCollider2D.size = new Vector2(Mathf.Min(1, textMesh.preferredWidth), Mathf.Min(1, textMesh.preferredHeight));
         this.name = $"Word ({word})";
     }

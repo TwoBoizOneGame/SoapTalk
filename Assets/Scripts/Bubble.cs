@@ -10,13 +10,17 @@ public class Bubble : MonoBehaviour
     public MeshRenderer renderer;
     public Deformable deformable;
 
+    public Transform wordInsertionPoint;
     public Transform wordAnchorParent;
     public GameObject wordAnchorPrefab;
     public float anchorSeparation=0.1f;
 
+    public List<WordAnchor> wordAnchors= new List<WordAnchor>();
+
     public void PrepareAnchors(List<Word> words)
     {
         wordAnchorParent.RemoveChildren();
+        wordAnchors.Clear();
         var minX = edgeCollider2D.points.Select(x=> x.x).Min()*transform.localScale.x;
         var maxX = edgeCollider2D.points.Select(x=>x.x).Max()*transform.localScale.x;
         Vector2 startPoint = new Vector2(minX, 0);
@@ -25,6 +29,7 @@ public class Bubble : MonoBehaviour
         {
             Word word = words[i];
             var anchor = Instantiate(wordAnchorPrefab, wordAnchorParent).GetComponent<WordAnchor>();
+            anchor.targetText=word.textMesh.text;
             anchor.transform.localScale = new Vector3(word.textMesh.preferredWidth, anchor.transform.localScale.y, anchor.transform.localScale.z);
             var xSize = anchor.transform.localScale.x;
             if (currentPoint.x+xSize > maxX)
@@ -37,6 +42,7 @@ public class Bubble : MonoBehaviour
             }
             anchor.transform.position = currentPoint;
             currentPoint += new Vector2(xSize+anchorSeparation,0);
+            wordAnchors.Add(anchor);
         }
     }
 
