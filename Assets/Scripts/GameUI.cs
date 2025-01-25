@@ -58,6 +58,7 @@ public class GameUI : MonoBehaviour
         goText.transform.DOScale(Vector3.one * 3, 2).SetEase(Ease.OutCubic);
         await DOTween.To(() => goText.color.a, (x) => goText.color = goText.color.WithAlpha(x), 0, 2).AsyncWaitForCompletion();
         goText.gameObject.SetActive(false);
+        goText.color = goText.color.WithAlpha(1);
     }
 
     public async void SetHeartCount(int heartCount)
@@ -89,6 +90,6 @@ public class GameUI : MonoBehaviour
         gameOverPopup.SetActive(true);
         gameOverPopupText.text = $"Score {GameManager.instance.currentScore}";
         gameOverHighscoreText.gameObject.SetActive(isNewHighscore);
-        gameOverHighscoreText.transform.DOPunchScale(Vector3.one*2, 1).SetLoops(3);
+        gameOverHighscoreText.transform.DOPunchScale(Vector3.one*1.25f, 1).SetLoops(3);
     }
 }

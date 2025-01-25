@@ -1,12 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class TransformExtensions
 {
     public static void RemoveChildren(this Transform transform)
     {
-        while (transform.childCount > 0)
+        List<Transform> children = new();
+        foreach (Transform child in transform)
         {
-            MonoBehaviour.Destroy(transform.GetChild(0).gameObject);
+            children.Add(child);
+        }
+        foreach (Transform child in children)
+        {
+            MonoBehaviour.Destroy(child.gameObject);
         }
     }
 }

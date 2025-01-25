@@ -13,6 +13,8 @@ public class Bubble : MonoBehaviour
     public Transform wordInsertionPoint;
     public Transform wordAnchorParent;
     public GameObject wordAnchorPrefab;
+
+    public Transform rightEnd;
     public float anchorSeparation=0.1f;
 
     public List<WordAnchor> wordAnchors= new List<WordAnchor>();
@@ -46,12 +48,22 @@ public class Bubble : MonoBehaviour
         }
     }
 
+    public void DestroyBubble()
+    {
+        foreach (Transform child in transform)
+        {
+            child.RemoveChildren();
+        }
+        Destroy(gameObject);
+    }
+
     public void ClearDeformers()
     {
-        while (deformable.DeformerElements.Count > 0)
+        var deformersToClear = deformable.DeformerElements.Where(x => x.Component is MagnetDeformer).ToList();
+        foreach (var deformer in deformersToClear)
         {
             deformable.RemoveDeformer(
-             deformable.DeformerElements[0].Component);
+             deformer.Component);
         }
     }
 }

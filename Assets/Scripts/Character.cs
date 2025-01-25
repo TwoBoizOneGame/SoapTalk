@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public enum CharacterRole { Talker, Listener };
@@ -6,15 +5,20 @@ public enum CharacterRole { Talker, Listener };
 public class Character : MonoBehaviour
 {
     [SerializeField]
-    string talkerTriggerName;
+    string talkingAnimationVariable;
     [SerializeField]
-    string listenerTriggerName;
+    string listeningAnimationVariable;
+    [SerializeField]
+    string blowingAnimationVariable;
 
     [SerializeField]
     Animator animator;
 
     [SerializeField]
     BoxCollider hearingArea;
+
+    [SerializeField]
+    int idleAnimCount=2;
 
     public CharacterRole currentRole;
 
@@ -27,22 +31,35 @@ public class Character : MonoBehaviour
     public void SetupCharacter(CharacterRole role)
     {
         talkerListener.RandomGenerate();
+        SetIdlePose();
         SetRole(role);
     }
 
     public void SetRole(CharacterRole role)
     {
-        currentRole=role;
+        currentRole=role;        
     }
 
-    public void StartListening()
+    public void SetListening(bool listening)
     {
-        animator.SetTrigger(listenerTriggerName);
+        animator.SetBool(listeningAnimationVariable, listening);
     }
 
-    public void StartTalking()
+    public void SetTalking(bool talking)
+    {   
+        animator.SetBool(talkingAnimationVariable, talking);
+    }
+
+    public void SetBlowing(bool blowing)
     {
-        animator.SetTrigger(talkerTriggerName);
+        animator.SetBool(blowingAnimationVariable, blowing);
+    }
+
+    public void SetIdlePose()
+    {
+        SetListening(false);
+        SetTalking(false);
+        animator.SetInteger("Idle", Random.Range(0, idleAnimCount));
     }
 
     public Vector3 GetEndAreaOffset()
@@ -58,7 +75,7 @@ public class Character : MonoBehaviour
                 if (GameManager.instance.currentState == GameState.Moving)
             {
                 // if (hearingArea.bounds.Contains(GameManager.instance.bubble.transform.position))
-                    if (GetEndAreaOffset().x <= GameManager.instance.bubble.transform.position.x)
+                    if (GetEndAreaOffset().x <= GameManager.instance.bubble.rightEnd.position.x)
                 {
                         GameManager.instance.ValidateSentence();
                 }

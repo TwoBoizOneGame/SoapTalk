@@ -80,12 +80,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08e3d732e35dd452295758234fe3f168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  talkerTriggerName: Talker
-  listenerTriggerName: Listener
+  talkingAnimationVariable: Talker
+  listeningAnimationVariable: Listener
+  blowingAnimationVariable: Blowing
   animator: {fileID: 6595226513714401977}
   hearingArea: {fileID: 2356935090720532861}
+  idleAnimCount: 2
+  currentRole: 0
   listeningEar: {fileID: 4727940468681329123}
   bubbleSpawnOffset: {fileID: 7125356254294984823}
+  mesh: {fileID: 4656087061465574083}
   talkerListener: {fileID: 5971145555132543930}
 --- !u!1 &4716332089813116623
 GameObject:

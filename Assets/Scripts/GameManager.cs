@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     public int currentHealth=5;
     public int currentRound=1;
 
-    Vector3 currentListenerStartingPosition;
+    Vector3 totalDistanceToEndPoint;
 
     void Start()
     {
@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
         currentHealth=maxHealth;
         currentState = GameState.Initial;
         currentRound=1;
-        currentListenerStartingPosition=currentListener.GetEndAreaOffset();
         currentListener.SetupCharacter(CharacterRole.Listener);
         currentTalker.SetupCharacter(CharacterRole.Talker);
         wordParser.LoadSentences();
@@ -69,9 +68,11 @@ public class GameManager : MonoBehaviour
     }
 
     void Update()
-    {        
-        var currentProgress = ((currentListenerStartingPosition.x-currentListener.transform.position.x)/currentListenerStartingPosition.x);
-        var timeToEnd = currentListener.transform.position.x/currentMovementSpeed;
+    {    
+        var endArea = currentListener.GetEndAreaOffset();
+        var remainingDistance = endArea.x-bubble.rightEnd.transform.position.x;
+        var currentProgress = 1-(remainingDistance/totalDistanceToEndPoint.x);
+        var timeToEnd = remainingDistance/currentMovementSpeed;
 
         GameUI.instance.UpdateProgress(currentProgress, timeToEnd);
         if (currentState == GameState.Moving)
@@ -139,19 +140,22 @@ public class GameManager : MonoBehaviour
     async void SpawnBubble()
     {
         currentState=GameState.Blowing;
+        currentTalker.SetBlowing(true);
         bubble = Instantiate(bubblePrefab, Vector3.zero, Quaternion.identity).GetComponent<Bubble>();
         var targetScale = bubble.transform.localScale;
-        bubble.transform.localScale=Vector3.zero;
+        bubble.transform.localScale=Vector3.zero;        
         await bubble.transform.DOScale(targetScale, 1).AsyncWaitForCompletion();
+        currentTalker.SetBlowing(false);
+        totalDistanceToEndPoint=currentListener.GetEndAreaOffset()-bubble.rightEnd.transform.position;
         StartTalking();
     }
 
     async void StartTalking()
     {
         currentState = GameState.Talking;
-        currentTalker.StartTalking();
-        // StartCoroutine("SpawnSentence");
+        currentTalker.SetTalking(true);
         await SpawnSentence();
+        currentTalker.SetTalking(false);
         await UniTask.WaitForSeconds(1);
         GameUI.instance.ShowGoText();
         StartMoving();
@@ -160,7 +164,7 @@ public class GameManager : MonoBehaviour
     void StartMoving()
     {
         currentState = GameState.Moving;
-        currentTalker.StartListening();
+        currentTalker.SetIdlePose();
     }
 
     async UniTask SpawnSentence()
@@ -193,14 +197,17 @@ public class GameManager : MonoBehaviour
     Word SpawnWord(string word)
     {
         var obj = Instantiate(wordPrefab, bubble.wordInsertionPoint.position, Quaternion.identity).GetComponent<Word>();
+        obj.transform.localScale = Vector3.zero;
         obj.Setup(word);
         spawnedWords.Add(obj);
+        obj.transform.DOScale(Vector3.one, .5f).SetEase(Ease.OutBounce);
         return obj;
     }
 
     public async UniTask ValidateSentence()
     {
         currentState = GameState.Reached;
+        currentListener.SetListening(true);
         if (currentlyDraggedWord != null)
         {
             currentlyDraggedWord.StopBeingDragged();
@@ -208,6 +215,7 @@ public class GameManager : MonoBehaviour
         }
 
         List<Word> wordsToProcess = new List<Word>(spawnedWords);
+        bool isPerfect=true;
         foreach (var anchor in bubble.wordAnchors)
         {
             if (anchor.currentlyHeldWord != null)
@@ -225,7 +233,7 @@ public class GameManager : MonoBehaviour
                     DOTween.To(() => anchor.currentlyHeldWord.textMesh.color, x => anchor.currentlyHeldWord.textMesh.color = x, Color.red, 1);
                     await anchor.currentlyHeldWord.transform.DOShakeRotation(1f).AsyncWaitForCompletion();
                     await anchor.currentlyHeldWord.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();                    
-                    RemoveHeart();
+                    isPerfect=false;
                 }
             }
             anchor.transform.DOScale(0, .5f);
@@ -234,6 +242,10 @@ public class GameManager : MonoBehaviour
                 anchor.currentlyHeldWord.transform.DOMove(currentListener.listeningEar.transform.position, 1);
                 anchor.currentlyHeldWord.transform.DOScale(Vector3.zero, 1);
                 wordsToProcess.Remove(anchor.currentlyHeldWord);
+            }
+            if (!isPerfect)
+            {
+                RemoveHeart();
             }
             await UniTask.WaitForSeconds(1.5f);
         }
@@ -244,7 +256,11 @@ public class GameManager : MonoBehaviour
             word.transform.DOScale(Vector3.zero, 1);
         }
         await bubble.transform.DOScale(0, .5f).SetEase(Ease.InOutExpo).AsyncWaitForCompletion();
-        StartNewRound();
+        bubble.DestroyBubble();
+        if (currentHealth > 0)
+        {
+            StartNewRound();
+        }
     }
 
     async void StartNewRound()
@@ -261,7 +277,8 @@ public class GameManager : MonoBehaviour
         currentTalker.SetRole(CharacterRole.Talker);
         currentListener.name = "Listener";
         currentListener.SetupCharacter(CharacterRole.Listener);
-        currentListenerStartingPosition=currentListener.GetEndAreaOffset();
+        currentTalker.SetIdlePose();
+        currentListener.SetIdlePose();
         currentRound++;
         GameUI.instance.UpdateRoundNumber();
 
@@ -280,6 +297,8 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
+        if (currentState == GameState.GameOver) return;
+
         currentState=GameState.GameOver;
         var maxScore = PlayerPrefs.GetInt(HIGHSCORE_KEY, 0);
         if (currentScore > maxScore)
