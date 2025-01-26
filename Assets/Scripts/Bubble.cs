@@ -26,9 +26,10 @@ public class Bubble : MonoBehaviour
         wordAnchorParent.RemoveChildren();
         wordAnchors.Clear();
         var minX = edgeCollider2D.points.Select(x => x.x).Min() * transform.localScale.x;
-        var maxX = edgeCollider2D.points.Select(x => x.x).Max() * transform.localScale.x -.25f;
+        var maxX = edgeCollider2D.points.Select(x => x.x).Max() * transform.localScale.x - .25f;
         Vector2 startPoint = new Vector2(minX, 0);
         Vector2 currentPoint = startPoint;
+        int lineCount = 1;
         for (int i = 0; i < words.Count; i++)
         {
             Word word = words[i];
@@ -36,19 +37,30 @@ public class Bubble : MonoBehaviour
             anchor.targetText = word.textMesh.text;
             anchor.CalculateScale(word.textMesh.preferredWidth);
             var xSize = anchor.GetXSize();
-            anchor.transform.localScale=Vector3.zero;
+            anchor.transform.localScale = Vector3.zero;
             if (currentPoint.x + xSize >= maxX)
             {
-                var newY=currentPoint.y - (word.textMesh.preferredHeight + anchorSeparation);
-                var closestPoint = edgeCollider2D.points.OrderBy(x => ((x* transform.localScale.x) -new Vector2(startPoint.x, newY)).sqrMagnitude).First();
-                closestPoint*=transform.localScale.x;
+                var newY = currentPoint.y - (word.textMesh.preferredHeight + anchorSeparation);
+                var closestPoint = edgeCollider2D.points.OrderBy(x => ((x * transform.localScale.x) - new Vector2(startPoint.x, newY)).sqrMagnitude).First();
+                closestPoint *= transform.localScale.x;
                 currentPoint = new Vector2(closestPoint.x, newY);
+                lineCount++;
             }
             anchor.transform.position = currentPoint;
             AudioManager.instance.PlayOneShotAsync(AudioManager.instance.spawnAnchorSounds);
-            await anchor.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();            
             currentPoint += new Vector2(xSize + anchorSeparation, 0);
             wordAnchors.Add(anchor);
+        }
+        if (lineCount >= 3)
+        {
+            foreach (var anchor in wordAnchors)
+            {
+                anchor.transform.position += Vector3.up * 2;
+            }
+        }
+        foreach (var anchor in wordAnchors)
+        {
+            await anchor.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();
         }
     }
 

@@ -50,6 +50,11 @@ public class GameManager : MonoBehaviour
     public int currentHealth = 5;
     public int currentRound = 1;
 
+    [SerializeField]
+    int easyRounds = 3;
+    [SerializeField]
+    int maxWordsInEasyRound = 4;
+
     Vector3 totalDistanceToEndPoint;
 
     public List<CardBase> allCards = new List<CardBase>();
@@ -208,8 +213,17 @@ public class GameManager : MonoBehaviour
 
     string[] GenerateSentence()
     {
-        var sentence = wordParser.sentences[Random.Range(0, wordParser.sentences.Count)];
-        var split = sentence.text.Split(' ');
+        Sentence sentence = null;
+        string[] split;
+        do {
+         sentence = wordParser.sentences[Random.Range(0, wordParser.sentences.Count)];
+         split = sentence.text.Split(' ');
+         if (currentRound > easyRounds) break;
+         else
+         {
+            if (split.Length <= maxWordsInEasyRound) break;
+         }
+        } while (true);
         return split;
     }
 
@@ -304,22 +318,24 @@ public class GameManager : MonoBehaviour
             }
             await UniTask.WaitForSeconds(1.5f);
         }
-        if (!isPerfect)
-        {
-            RemoveHeart();
-        }
 
         foreach (var word in wordsToProcess)
         {
             DOTween.To(() => word.textMesh.color, x => word.textMesh.color = x, Color.red, 1);
             word.transform.DOScale(Vector3.zero, 1);
+            isPerfect=false;
+        }
+        if (!isPerfect)
+        {
+            await RemoveHeart();
         }
         if (currentHealth > 0)
         {
             currentListener.SetWin(true);
         }
         AudioManager.instance.PlayOneShotAsync(AudioManager.instance.popSounds);
-        await bubble.transform.DOScale(0, .5f).SetEase(Ease.InOutExpo).AsyncWaitForCompletion();
+        bubble.transform.DOScale(0, .5f).SetEase(Ease.InOutExpo).AsyncWaitForCompletion();
+        await UniTask.WaitForSeconds(3);
         bubble.DestroyBubble();
         if (currentHealth > 0)
         {
@@ -349,7 +365,7 @@ public class GameManager : MonoBehaviour
         }
 
         var dist = currentSentence.Length * 5 * currentMovementSpeed;
-        var minimumOffset = 5;
+        var minimumOffset = 8;
         currentListener.name = "Listener";
         currentListener.SetupCharacter(CharacterRole.Listener);
         currentListener.transform.position = currentTalker.transform.position + Vector3.right * (minimumOffset + dist);
@@ -383,7 +399,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RemoveHeart()
+    public async UniTask RemoveHeart()
     {
         currentHealth = Mathf.Max(currentHealth - 1, 0);
         if (currentHealth == 0)
@@ -391,6 +407,9 @@ public class GameManager : MonoBehaviour
             EndGame();
         }
         GameUI.instance.SetHeartCount(currentHealth);
+        currentListener.SetFail(true);
+        await UniTask.WaitForSeconds(3);
+        currentListener.SetFail(false);
     }
 
     public void EndGame()
@@ -414,6 +433,7 @@ public class GameManager : MonoBehaviour
 
     public void Quit()
     {
+        ResumeGame();
         SceneManager.LoadScene(0);
     }
 

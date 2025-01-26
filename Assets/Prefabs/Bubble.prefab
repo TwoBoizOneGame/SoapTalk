@@ -185,7 +185,7 @@ MonoBehaviour:
   wordAnchorParent: {fileID: 1644361779959668799}
   wordAnchorPrefab: {fileID: 7004664088151754693, guid: d703969794e64419287c2e619c1e0e6e, type: 3}
   rightEnd: {fileID: 7522151961095613670}
-  anchorSeparation: 1.5
+  anchorSeparation: 2
   wordAnchors: []
 --- !u!33 &5625234075554269475
 MeshFilter:
