@@ -52,12 +52,13 @@ public class GameUI : MonoBehaviour
     public void UpdateScore(int score)
     {
         scoreText.text = $"Score: {score}";
-        scoreText.transform.DOPunchScale(Vector3.one * 1.5f, .5f);
+        scoreText.transform.DOPunchScale(Vector3.one * 1.1f, .5f);
     }
 
     public void UpdateGoldAmount(int gold)
     {
-        goldText.text = $"Gold {gold}";
+        goldText.text = $"Gold: {gold}";
+        goldText.transform.DOPunchScale(Vector3.one * 1.1f, .5f);
     }
 
     public void UpdateRoundNumber()
