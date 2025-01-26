@@ -43,10 +43,10 @@ public class Bubble : MonoBehaviour
                 var closestPoint = edgeCollider2D.points.OrderBy(x => ((x* transform.localScale.x) -new Vector2(startPoint.x, newY)).sqrMagnitude).First();
                 closestPoint*=transform.localScale.x;
                 currentPoint = new Vector2(closestPoint.x, newY);
-
             }
             anchor.transform.position = currentPoint;
-            await anchor.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();
+            AudioManager.instance.PlayOneShotAsync(AudioManager.instance.spawnAnchorSounds);
+            await anchor.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();            
             currentPoint += new Vector2(xSize + anchorSeparation, 0);
             wordAnchors.Add(anchor);
         }

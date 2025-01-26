@@ -41,6 +41,7 @@ public class BombModificator : ModificatorBase
     async UniTask Explode()
     {
         await word.modificatorIcon.transform.DOScale(Vector3.one*5, 0.5f).AsyncWaitForCompletion();
+        AudioManager.instance.PlayOneShotAsync(AudioManager.instance.explosionSounds);
         word.gameObject.SetActive(false);
     }
 

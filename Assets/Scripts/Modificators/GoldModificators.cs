@@ -17,6 +17,7 @@ public class GoldModificator : ModificatorBase
     {
         GameManager.instance.goldAmount+= goldAmount;
         GameUI.instance.UpdateGoldAmount(GameManager.instance.goldAmount);
+        AudioManager.instance.PlayOneShotAsync(AudioManager.instance.coinSounds);
         base.OnScore();
     }
 }

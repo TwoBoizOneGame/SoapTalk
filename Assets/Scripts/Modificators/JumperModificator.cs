@@ -21,6 +21,7 @@ public class JumperModificator : ModificatorBase
         anchor.currentlyHeldWord=null;
         word.StopBeingDragged();
         word.rigidbody2D.AddForce(word.transform.up*jumpStrength);
+        AudioManager.instance.PlayOneShotAsync(AudioManager.instance.jumpSounds);
         word.modificatorIcon.SetActive(false);
         isActive=false;
     }

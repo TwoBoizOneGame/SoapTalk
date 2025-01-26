@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour
         var targetScale = bubble.transform.localScale;
         bubble.transform.localScale = Vector3.zero;
         await bubble.transform.DOScale(targetScale, 1).AsyncWaitForCompletion();
+        AudioManager.instance.PlayOneShotAsync(AudioManager.instance.stretchSounds);
         currentTalker.SetBlowing(false);
         totalDistanceToEndPoint = currentListener.GetEndAreaOffset() - bubble.rightEnd.transform.position;
         StartTalking();
@@ -256,28 +257,29 @@ public class GameManager : MonoBehaviour
                 {
                     currentScore += anchor.targetText.Length;
                     anchor.currentlyHeldWord.transform.DOPunchScale(Vector3.one * 1.5f, 1);
+                    AudioManager.instance.PlayOneShotAsync(AudioManager.instance.goodAnswerSound);
                     await DOTween.To(() => anchor.currentlyHeldWord.textMesh.color, x => anchor.currentlyHeldWord.textMesh.color = x, Color.green, 1).AsyncWaitForCompletion();
                     GameUI.instance.UpdateScore(currentScore);
                     if (anchor.currentlyHeldWord.appliedModificator != null)
                     {
                         anchor.currentlyHeldWord.appliedModificator.OnScore();
                     }
-                    AudioManager.instance.PlayOneShotAsync(AudioManager.instance.goodAnswerSound);
                 }
                 else
                 {
                     await anchor.currentlyHeldWord.transform.DOScale(Vector3.one * 1.5f, 0.5f).AsyncWaitForCompletion();
                     DOTween.To(() => anchor.currentlyHeldWord.textMesh.color, x => anchor.currentlyHeldWord.textMesh.color = x, Color.red, 1);
+                    AudioManager.instance.PlayOneShotAsync(AudioManager.instance.badAnswerSound);
                     await anchor.currentlyHeldWord.transform.DOShakeRotation(1f).AsyncWaitForCompletion();
                     await anchor.currentlyHeldWord.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();
                     isPerfect = false;
-                    AudioManager.instance.PlayOneShotAsync(AudioManager.instance.badAnswerSound);
                 }
             }
             anchor.transform.DOScale(0, .5f);
             if (anchor.currentlyHeldWord != null)
             {
                 anchor.currentlyHeldWord.transform.DOMove(currentListener.listeningEar.transform.position, 1);
+                AudioManager.instance.PlayOneShotAsync(AudioManager.instance.whooshSounds);
                 anchor.currentlyHeldWord.transform.DOScale(Vector3.zero, 1);
                 wordsToProcess.Remove(anchor.currentlyHeldWord);
             }
@@ -297,6 +299,7 @@ public class GameManager : MonoBehaviour
         {
             currentListener.SetWin(true);
         }
+        AudioManager.instance.PlayOneShotAsync(AudioManager.instance.popSounds);
         await bubble.transform.DOScale(0, .5f).SetEase(Ease.InOutExpo).AsyncWaitForCompletion();
         bubble.DestroyBubble();
         if (currentHealth > 0)
