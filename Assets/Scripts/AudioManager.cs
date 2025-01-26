@@ -9,19 +9,31 @@ public class AudioManager : MonoBehaviour
     public AudioClip pickSound;
     public AudioClip placeSound;
 
+    public AudioClip talkingSound;
+    public AudioClip stretchSound;
+    public AudioClip goodAnswerSound;
+    public AudioClip badAnswerSound;
+
     void Awake()
     {
         _instance=this;
     }
 
-    public async UniTask PlayOneShot(AudioClip clip)
+    public async UniTask PlayOneShotAsync(AudioClip clip)
+    {
+        var sfx = PlayOneShot(clip,false);     
+        await UniTask.WaitForSeconds(clip.length);
+        Destroy(sfx);
+    }
+
+    public AudioSource PlayOneShot(AudioClip clip, bool loop)
     {
         var sfx = new GameObject();
         var ac = sfx.AddComponent<AudioSource>();
         ac.clip = clip;
+        ac.loop=loop;
         ac.spatialBlend=0;
         ac.Play();
-        await UniTask.WaitForSeconds(clip.length);
-        Destroy(sfx);
+        return ac;
     }
 }

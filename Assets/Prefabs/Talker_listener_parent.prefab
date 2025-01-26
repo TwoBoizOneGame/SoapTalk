@@ -83,6 +83,8 @@ MonoBehaviour:
   talkingAnimationVariable: Talker
   listeningAnimationVariable: Listener
   blowingAnimationVariable: Blowing
+  failAnimationVariable: Lose
+  winAnimationVariable: Win
   animator: {fileID: 6595226513714401977}
   hearingArea: {fileID: 2356935090720532861}
   idleAnimCount: 2

@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     public Character currentTalker;
     public Character currentListener;
 
-    public float defaultMovementSpeed=1;
+    public float defaultMovementSpeed = 1;
     public float currentMovementSpeed = 1;
 
     public int currentScore = 0;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     public List<CardBase> allCards = new List<CardBase>();
     public List<CardBase> availableCards = new List<CardBase>();
-    public int maxCardsAvailable=2;
+    public int maxCardsAvailable = 2;
 
     void Start()
     {
@@ -165,12 +165,11 @@ public class GameManager : MonoBehaviour
     async void StartTalking()
     {
         currentState = GameState.Talking;
-        currentTalker.SetTalking(true);
         await SpawnSentence();
-        currentTalker.SetTalking(false);
+        currentTalker.SetIdlePose();
         GameUI.instance.SetCardDrawerVisibility(true);
         await UniTask.WaitForSeconds(1);
-        GameUI.instance.ShowGoText();        
+        GameUI.instance.ShowGoText();
         StartMoving();
     }
 
@@ -206,7 +205,11 @@ public class GameManager : MonoBehaviour
             w.gameObject.SetActive(false);
             words.Add(w);
         }
+        currentTalker.SetBlowing(true);
         await bubble.PrepareAnchors(words);
+        currentTalker.SetBlowing(false);
+        currentTalker.SetTalking(true);
+        var audio = AudioManager.instance.PlayOneShot(AudioManager.instance.talkingSound, true);
         foreach (var word in words)
         {
             word.gameObject.SetActive(true);
@@ -219,6 +222,8 @@ public class GameManager : MonoBehaviour
             word.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
             await UniTask.WaitForSeconds(1);
         }
+        currentTalker.SetTalking(false);
+        Destroy(audio.gameObject);
     }
 
     Word SpawnWord(string word)
@@ -233,7 +238,7 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.Reached;
         GameUI.instance.SetCardDrawerVisibility(false);
-        currentListener.SetListening(true);    
+        currentListener.SetListening(true);
         if (currentlyDraggedWord != null)
         {
             currentlyDraggedWord.StopBeingDragged();
@@ -257,6 +262,7 @@ public class GameManager : MonoBehaviour
                     {
                         anchor.currentlyHeldWord.appliedModificator.OnScore();
                     }
+                    AudioManager.instance.PlayOneShotAsync(AudioManager.instance.goodAnswerSound);
                 }
                 else
                 {
@@ -265,6 +271,7 @@ public class GameManager : MonoBehaviour
                     await anchor.currentlyHeldWord.transform.DOShakeRotation(1f).AsyncWaitForCompletion();
                     await anchor.currentlyHeldWord.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();
                     isPerfect = false;
+                    AudioManager.instance.PlayOneShotAsync(AudioManager.instance.badAnswerSound);
                 }
             }
             anchor.transform.DOScale(0, .5f);
@@ -301,8 +308,14 @@ public class GameManager : MonoBehaviour
 
     async void StartNewRound()
     {
+        for (int i = 0; i < spawnedWords.Count; i++)
+        {
+            Destroy(spawnedWords[i].gameObject);
+        }
+        spawnedWords.Clear();
+
         currentState = GameState.Initial;
-        currentMovementSpeed=defaultMovementSpeed;
+        currentMovementSpeed = defaultMovementSpeed;
         currentSentence = GenerateSentence();
         if (currentRound > 0)
         {

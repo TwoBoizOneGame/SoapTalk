@@ -1,12 +1,21 @@
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BombModificator.asset", menuName = "Modificators/Bomb Modificator")]
 public class BombModificator : ModificatorBase
 {
+    public Vector2 explosionDelayRange = new Vector2(5,9);
     public float explosionDelay=5;
 
     bool isActive=false;
     float startTime;
+
+    public override void Setup(Word word)
+    {
+        base.Setup(word);
+        explosionDelay=Random.Range(explosionDelayRange.x,explosionDelayRange.y);
+    }
 
     public override void OnStartMovement()
     {
@@ -21,10 +30,18 @@ public class BombModificator : ModificatorBase
         {
             if (GameManager.instance.currentState == GameState.Moving)
             {
-                word.gameObject.SetActive(false);
+                isActive=false;
+                word.canBePickedUp=false;
+                Explode();
             }
         }
         base.OnUpdate();
+    }
+
+    async UniTask Explode()
+    {
+        await word.modificatorIcon.transform.DOScale(Vector3.one*5, 0.5f).AsyncWaitForCompletion();
+        word.gameObject.SetActive(false);
     }
 
     public override void OnPlace(WordAnchor anchor)

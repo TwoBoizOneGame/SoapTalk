@@ -23,6 +23,8 @@ public class Word : MonoBehaviour
     public List<ModificatorBase> availableModificators;
     public ModificatorBase appliedModificator;
 
+    public bool canBePickedUp=true;
+
     public void Setup(string word)
     {
         textMesh.text = word;
@@ -82,7 +84,7 @@ public class Word : MonoBehaviour
 
     public bool CheckMouseOverlap(Vector3 pos)
     {
-        var result = boxCollider2D.OverlapPoint(pos);
+        var result = boxCollider2D.OverlapPoint(pos) && canBePickedUp;
         if (result) OnHover();
         else OnStopHover();
 
@@ -107,6 +109,7 @@ public class Word : MonoBehaviour
             relatedAnchor.currentlyHeldWord = null;
             relatedAnchor = null;
         }
+        AudioManager.instance.PlayOneShotAsync(AudioManager.instance.pickSound);
     }
 
     public void StopBeingDragged()
@@ -136,5 +139,6 @@ public class Word : MonoBehaviour
         {
             appliedModificator.OnPlace(anchor);
         }
+        AudioManager.instance.PlayOneShotAsync(AudioManager.instance.placeSound);
     }
 }

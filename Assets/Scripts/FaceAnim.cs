@@ -38,12 +38,12 @@ public class FaceAnim : StateMachineBehaviour
             Blow();
         }
 
-        if (animator.GetInteger("Idle") == 1 && animator.GetBool("Talker") == false && animator.GetBool("Listener") == false && animator.GetBool("Blowing") == false && animator.GetBool("Win") == false && animator.GetBool("Lose") == false)
+        if (animator.GetInteger("Idle") == 0 && animator.GetBool("Talker") == false && animator.GetBool("Listener") == false && animator.GetBool("Blowing") == false && animator.GetBool("Win") == false && animator.GetBool("Lose") == false)
         {
             Idle1();
         }
 
-        if (animator.GetInteger("Idle") == 2 && animator.GetBool("Talker") == false && animator.GetBool("Listener") == false && animator.GetBool("Blowing") == false && animator.GetBool("Win") == false && animator.GetBool("Lose") == false)
+        if (animator.GetInteger("Idle") == 1 && animator.GetBool("Talker") == false && animator.GetBool("Listener") == false && animator.GetBool("Blowing") == false && animator.GetBool("Win") == false && animator.GetBool("Lose") == false)
         {
             Idle2();
         }
