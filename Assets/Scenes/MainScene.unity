@@ -393,7 +393,7 @@ MonoBehaviour:
   maxHealth: 3
   currentHealth: 3
   currentRound: 1
-  easyRounds: 3
+  easyRounds: 2
   maxWordsInEasyRound: 4
   allCards:
   - {fileID: 11400000, guid: 125a3637c8aee48b0ab12f67bbf43e35, type: 2}
