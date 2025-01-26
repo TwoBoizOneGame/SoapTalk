@@ -17,7 +17,7 @@ public class Bubble : MonoBehaviour
     public GameObject wordAnchorPrefab;
 
     public Transform rightEnd;
-    public float anchorSeparation = 0.1f;
+    public Vector2 anchorSeparation = new Vector2(2, 1);
 
     public List<WordAnchor> wordAnchors = new List<WordAnchor>();
 
@@ -40,7 +40,7 @@ public class Bubble : MonoBehaviour
             anchor.transform.localScale = Vector3.zero;
             if (currentPoint.x + xSize >= maxX)
             {
-                var newY = currentPoint.y - (word.textMesh.preferredHeight + anchorSeparation);
+                var newY = currentPoint.y - (word.textMesh.preferredHeight + anchorSeparation.y);
                 var closestPoint = edgeCollider2D.points.OrderBy(x => ((x * transform.localScale.x) - new Vector2(startPoint.x, newY)).sqrMagnitude).First();
                 closestPoint *= transform.localScale.x;
                 currentPoint = new Vector2(closestPoint.x, newY);
@@ -48,7 +48,7 @@ public class Bubble : MonoBehaviour
             }
             anchor.transform.position = currentPoint;
             AudioManager.instance.PlayOneShotAsync(AudioManager.instance.spawnAnchorSounds);
-            currentPoint += new Vector2(xSize + anchorSeparation, 0);
+            currentPoint += new Vector2(xSize + anchorSeparation.x, 0);
             wordAnchors.Add(anchor);
         }
         if (lineCount >= 3)

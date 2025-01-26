@@ -158,6 +158,7 @@ public class GameUI : MonoBehaviour
     {
         pauseScreen.SetActive(visible);
         if (visible) PauseGame();
+        else GameManager.instance.ResumeGame();
     }
 
     public void PauseGame()

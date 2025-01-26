@@ -180,8 +180,8 @@ public class GameManager : MonoBehaviour
         bubble = Instantiate(bubblePrefab, Vector3.zero, Quaternion.identity).GetComponent<Bubble>();
         var targetScale = bubble.transform.localScale;
         bubble.transform.localScale = Vector3.zero;
-        await bubble.transform.DOScale(targetScale, 1).AsyncWaitForCompletion();
         AudioManager.instance.PlayOneShotAsync(AudioManager.instance.stretchSounds);
+        await bubble.transform.DOScale(targetScale, 1).AsyncWaitForCompletion();
         currentTalker.SetBlowing(false);
         totalDistanceToEndPoint = currentListener.GetEndAreaOffset() - bubble.rightEnd.transform.position;
         StartTalking();
@@ -327,6 +327,7 @@ public class GameManager : MonoBehaviour
         }
         if (!isPerfect)
         {
+            currentListener.SetListening(false);
             await RemoveHeart();
         }
         if (currentHealth > 0)
@@ -365,7 +366,7 @@ public class GameManager : MonoBehaviour
         }
 
         var dist = currentSentence.Length * 5 * currentMovementSpeed;
-        var minimumOffset = 8;
+        var minimumOffset = 30;
         currentListener.name = "Listener";
         currentListener.SetupCharacter(CharacterRole.Listener);
         currentListener.transform.position = currentTalker.transform.position + Vector3.right * (minimumOffset + dist);
@@ -408,7 +409,7 @@ public class GameManager : MonoBehaviour
         }
         GameUI.instance.SetHeartCount(currentHealth);
         currentListener.SetFail(true);
-        await UniTask.WaitForSeconds(3);
+        await UniTask.WaitForSeconds(2);
         currentListener.SetFail(false);
     }
 

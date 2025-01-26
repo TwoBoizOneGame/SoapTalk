@@ -48,7 +48,9 @@ MonoBehaviour:
   pickSound: {fileID: 8300000, guid: 92eadfdcdfee50b45b3c99d05f82185c, type: 3}
   placeSound: {fileID: 8300000, guid: 803e5e23f95d40b4da1b9195d309e49b, type: 3}
   talkingSound: {fileID: 8300000, guid: 4d0c4765e44d8f44e8ffe4bfb95a0596, type: 3}
-  stretchSounds: []
+  stretchSounds:
+  - {fileID: 8300000, guid: 1d6138ab978d2b447bb54b7b43c3a221, type: 3}
+  - {fileID: 8300000, guid: 9aba3b43016bed840bbb4b0da78f4adc, type: 3}
   goodAnswerSound:
   - {fileID: 8300000, guid: 3ea8d719ac8b662438c05645cd3c19ae, type: 3}
   - {fileID: 8300000, guid: 2eea984d724ac5546a061840f7e63d44, type: 3}
