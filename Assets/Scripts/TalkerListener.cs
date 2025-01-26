@@ -58,7 +58,7 @@ public class TalkerListener : MonoBehaviour
         if (blink_time >= 100.0f)
         {
             EyesOpenClose(Eyes_closed[rand_skin]);
-            if (blink_time >= 130.0f)
+            if (blink_time >= 115.0f)
             {
                 blink_time = 0.0f;
             }
