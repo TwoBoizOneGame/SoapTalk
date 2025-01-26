@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67420d000d32f47e0bb189b963703952, type: 3}
-  m_Name: GoldModificator
+  m_Script: {fileID: 11500000, guid: c80e48c7daa554d4aa30ff10f429275a, type: 3}
+  m_Name: BombModificator
   m_EditorClassIdentifier: 
-  visualization: {fileID: 6189145664669377941, guid: ac940f9485ef5144698cc80bd86d443a, type: 3}
+  visualization: {fileID: 5207234350886720728, guid: 6fc7ea482b3648b41b9f159016132ff4, type: 3}
   word: {fileID: 0}
-  rarity: 0.5
-  isNegative: 0
-  goldAmount: 0
-  soundOnScore: {fileID: 0}
+  rarity: 1
+  isNegative: 1
+  explosionDelay: 5

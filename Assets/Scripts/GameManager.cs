@@ -33,13 +33,15 @@ public class GameManager : MonoBehaviour
     public GameObject environment;
 
     public string[] currentSentence;
-    List<Word> spawnedWords = new List<Word>();
+    public List<Word> spawnedWords = new List<Word>();
 
     public Word currentlyDraggedWord;
     public WordAnchor currentlyHoveredAnchor;
 
     public Character currentTalker;
     public Character currentListener;
+
+    public float defaultMovementSpeed=1;
     public float currentMovementSpeed = 1;
 
     public int currentScore = 0;
@@ -49,6 +51,10 @@ public class GameManager : MonoBehaviour
     public int currentRound = 1;
 
     Vector3 totalDistanceToEndPoint;
+
+    public List<CardBase> allCards = new List<CardBase>();
+    public List<CardBase> availableCards = new List<CardBase>();
+    public int maxCardsAvailable=2;
 
     void Start()
     {
@@ -61,6 +67,7 @@ public class GameManager : MonoBehaviour
         wordParser.LoadSentences();
         GameUI.instance.SetHeartCount(currentHealth);
         GameUI.instance.UpdateScore(currentScore);
+        GameUI.instance.UpdateGoldAmount(goldAmount);
         StartNewRound();
 
 #if UNITY_EDITOR
@@ -115,10 +122,10 @@ public class GameManager : MonoBehaviour
                     {
                         if (currentlyDraggedWord == null)
                         {
-                            Debug.Log($"Hit {word.transform.name}");
+                            // Debug.Log($"Hit {word.transform.name}");
                             if (word != null && !word.isBeingDragged)
                             {
-                                Debug.Log($"Dragging {word.name}");
+                                // Debug.Log($"Dragging {word.name}");
                                 word.BeginBeingDragged();
                                 currentlyDraggedWord = word;
                             }
@@ -161,8 +168,9 @@ public class GameManager : MonoBehaviour
         currentTalker.SetTalking(true);
         await SpawnSentence();
         currentTalker.SetTalking(false);
+        GameUI.instance.SetCardDrawerVisibility(true);
         await UniTask.WaitForSeconds(1);
-        GameUI.instance.ShowGoText();
+        GameUI.instance.ShowGoText();        
         StartMoving();
     }
 
@@ -170,6 +178,13 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.Moving;
         currentTalker.SetIdlePose();
+        foreach (var word in spawnedWords)
+        {
+            if (word.appliedModificator != null)
+            {
+                word.appliedModificator.OnStartMovement();
+            }
+        }
     }
 
     string[] GenerateSentence()
@@ -217,10 +232,12 @@ public class GameManager : MonoBehaviour
     public async UniTask ValidateSentence()
     {
         currentState = GameState.Reached;
-        currentListener.SetListening(true);
+        GameUI.instance.SetCardDrawerVisibility(false);
+        currentListener.SetListening(true);    
         if (currentlyDraggedWord != null)
         {
             currentlyDraggedWord.StopBeingDragged();
+            currentlyDraggedWord.OnStopHover();
             currentlyDraggedWord = null;
         }
 
@@ -285,6 +302,7 @@ public class GameManager : MonoBehaviour
     async void StartNewRound()
     {
         currentState = GameState.Initial;
+        currentMovementSpeed=defaultMovementSpeed;
         currentSentence = GenerateSentence();
         if (currentRound > 0)
         {
@@ -306,8 +324,28 @@ public class GameManager : MonoBehaviour
         currentListener.SetIdlePose();
         currentRound++;
         GameUI.instance.UpdateRoundNumber();
+        GenerateCards();
 
         SpawnBubble();
+    }
+
+    public void GenerateCards()
+    {
+        for (int i = 0; i < availableCards.Count; i++)
+        {
+            if (availableCards[i] != null)
+                Destroy(availableCards[i]);
+        }
+        availableCards.Clear();
+        GameUI.instance.cardsContainer.RemoveChildren();
+
+        for (int i = 0; i < maxCardsAvailable; i++)
+        {
+            var r = allCards[Random.Range(0, allCards.Count)];
+            var card = Instantiate(r);
+            GameUI.instance.CreateCard(card);
+            availableCards.Add(card);
+        }
     }
 
     public void RemoveHeart()

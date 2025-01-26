@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Deform;
 using TMPro;
 using Unity.VisualScripting;
@@ -12,29 +13,39 @@ public class Word : MonoBehaviour
     public BoxCollider2D boxCollider2D;
     public Rigidbody2D rigidbody2D;
 
-    public bool isBeingDragged=false;
+    public bool isBeingDragged = false;
     public Color highlightColor = Color.green;
     public Color normalColor = Color.white;
 
     public WordAnchor relatedAnchor;
     public GameObject modificatorIcon;
-    
+
     public List<ModificatorBase> availableModificators;
     public ModificatorBase appliedModificator;
-    public float modificatorChance;
 
     public void Setup(string word)
     {
-        textMesh.text = word;        
+        textMesh.text = word;
         boxCollider2D.size = new Vector2(Mathf.Min(1, textMesh.preferredWidth), Mathf.Min(1, textMesh.preferredHeight));
         this.name = $"Word ({word})";
 
-        if (Random.value < modificatorChance)
+        var rand = Random.value;
+        var mod = availableModificators.Where(x => x.rarity >= rand).OrderBy(x => x.rarity).FirstOrDefault();
+        if (mod != null)
         {
-            var mod = availableModificators[Random.Range(0, 1)];
-            appliedModificator = mod;
-            modificatorIcon.gameObject.SetActive(true);
-            mod.Setup(this);
+            Debug.Log($"Modificator picked: {mod.name} rarity {mod.rarity} ({rand})");
+            appliedModificator = Instantiate(mod);
+            appliedModificator.Setup(this);
+        }
+
+        modificatorIcon.SetActive(mod != null);
+    }
+
+    void OnDestroy()
+    {
+        if (appliedModificator != null)
+        {
+            Destroy(appliedModificator);
         }
     }
 
@@ -46,22 +57,26 @@ public class Word : MonoBehaviour
             previousPos = transform.position;
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             var mousePos = ray.GetPoint(-Camera.main.transform.position.z);
-            mousePos = new Vector3(mousePos.x, mousePos.y,0);
+            mousePos = new Vector3(mousePos.x, mousePos.y, 0);
 
             var targetPos = new Vector3(mousePos.x, mousePos.y);
 
-            var bubble = GameManager.instance.bubble; 
+            var bubble = GameManager.instance.bubble;
 
-            var maxDistFromCenter=(bubble.renderer.bounds.extents.x)*.8f;
-            var distFromCenter = targetPos-bubble.transform.position;
+            var maxDistFromCenter = (bubble.renderer.bounds.extents.x) * .8f;
+            var distFromCenter = targetPos - bubble.transform.position;
             // Debug.Log($"{mousePos} {distFromCenter.magnitude} {maxDistFromCenter}");
-            if (distFromCenter.sqrMagnitude > maxDistFromCenter*maxDistFromCenter)
+            if (distFromCenter.sqrMagnitude > maxDistFromCenter * maxDistFromCenter)
             {
-                targetPos = bubble.transform.position+(distFromCenter.normalized*maxDistFromCenter)*.85f;
+                targetPos = bubble.transform.position + (distFromCenter.normalized * maxDistFromCenter) * .85f;
             }
 
-            rigidbody2D.linearVelocity=Vector2.zero;
-            transform.position=targetPos;
+            rigidbody2D.linearVelocity = Vector2.zero;
+            transform.position = targetPos;
+        }
+        if (appliedModificator != null)
+        {
+            appliedModificator.OnUpdate();
         }
     }
 
@@ -81,12 +96,12 @@ public class Word : MonoBehaviour
 
     public void OnStopHover()
     {
-        textMesh.color=normalColor;
+        textMesh.color = normalColor;
     }
 
     public void BeginBeingDragged()
     {
-        isBeingDragged=true;
+        isBeingDragged = true;
         if (relatedAnchor != null)
         {
             relatedAnchor.currentlyHeldWord = null;
@@ -96,26 +111,30 @@ public class Word : MonoBehaviour
 
     public void StopBeingDragged()
     {
-        isBeingDragged=false;
+        isBeingDragged = false;
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-        var velocityDiff =transform.position-previousPos;
+        var velocityDiff = transform.position - previousPos;
         var defaultGravity = Vector2.down * 0.1f;
         rigidbody2D.linearVelocity = Vector2.Max(velocityDiff, defaultGravity);
         if (relatedAnchor != null)
         {
-            relatedAnchor.currentlyHeldWord=null;
-            relatedAnchor=null;
+            relatedAnchor.currentlyHeldWord = null;
+            relatedAnchor = null;
         }
     }
 
     public void PlaceAtAnchor(WordAnchor anchor)
     {
-        anchor.currentlyHeldWord=this;
-        relatedAnchor=anchor;
+        anchor.currentlyHeldWord = this;
+        relatedAnchor = anchor;
         rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-        rigidbody2D.angularVelocity=0;
-        rigidbody2D.linearVelocity=Vector2.zero;
-        transform.position = anchor.placementPoint.position+boxCollider2D.bounds.extents.y*Vector3.up;
-        transform.rotation=Quaternion.identity;
+        rigidbody2D.angularVelocity = 0;
+        rigidbody2D.linearVelocity = Vector2.zero;
+        transform.position = anchor.placementPoint.position + boxCollider2D.bounds.extents.y * Vector3.up;
+        transform.rotation = Quaternion.identity;
+        if (appliedModificator != null)
+        {
+            appliedModificator.OnPlace(anchor);
+        }
     }
 }

@@ -17,6 +17,7 @@ public class GameUI : MonoBehaviour
     }
 
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI goldText;
     public GameObject heartPrefab;
     public Transform heartContainer;
     public Slider progressSlider;
@@ -33,9 +34,19 @@ public class GameUI : MonoBehaviour
     public RenderTexture talkerRt;
     public RenderTexture listenerRT;
 
+    public Transform cardsContainer;
+    public GameObject cardPrefab;
+
+    public CardInfoUI cardInfoUI;
+
+
     void Awake()
     {
         _instance = this;
+    }
+
+    void Start()
+    {
     }
 
     public void UpdateScore(int score)
@@ -44,10 +55,15 @@ public class GameUI : MonoBehaviour
         scoreText.transform.DOPunchScale(Vector3.one * 1.5f, .5f);
     }
 
+    public void UpdateGoldAmount(int gold)
+    {
+        goldText.text = $"Gold {gold}";
+    }
+
     public void UpdateRoundNumber()
     {
         roundText.text = $"Round {GameManager.instance.currentRound}";
-        roundText.transform.DOPunchScale(Vector3.one*2, 1);
+        roundText.transform.DOPunchScale(Vector3.one * 2, 1);
     }
 
     public void UpdateProgress(float value, float timeLeft)
@@ -61,7 +77,39 @@ public class GameUI : MonoBehaviour
         var left = talkerImage.texture == talkerRt ? talkerRt : listenerRT;
         var right = listenerImage.texture == listenerRT ? listenerRT : talkerRt;
         talkerImage.texture = right;
-        listenerImage.texture=left;
+        listenerImage.texture = left;
+    }
+
+    public void CreateCard(CardBase baseCard)
+    {
+        var card = Instantiate(cardPrefab, cardsContainer).GetComponent<CardUI>();
+        card.Setup(baseCard);
+    }
+
+    public void ShowCardInfo(CardUI hoveredCard)
+    {
+        if (hoveredCard == null)
+        {
+            cardInfoUI.gameObject.SetActive(false);
+            return;
+        }
+        cardInfoUI.Setup(hoveredCard.relatedCard);
+        var hintRt = cardInfoUI.transform as RectTransform;
+        var cardRt = hoveredCard.transform as RectTransform;
+        hintRt.position = cardRt.position + Vector3.up * 20;
+
+        cardInfoUI.gameObject.SetActive(true);
+    }
+
+    public void SetCardDrawerVisibility(bool visible)
+    {
+        RectTransform cardsContainerRt = cardsContainer.transform as RectTransform;
+
+        Vector2 hiddenPosition = new Vector2(cardsContainerRt.anchoredPosition.x, -cardsContainerRt.rect.height);
+        Vector2 visiblePosition = new Vector2(cardsContainerRt.anchoredPosition.x, 0);
+
+        cardsContainerRt.DOAnchorPos(visible ? visiblePosition : hiddenPosition, 0.5f)
+            .SetEase(Ease.InOutQuad);
     }
 
     public async UniTask ShowGoText()
@@ -103,6 +151,6 @@ public class GameUI : MonoBehaviour
         gameOverPopup.SetActive(true);
         gameOverPopupText.text = $"Score: {GameManager.instance.currentScore}";
         gameOverHighscoreText.gameObject.SetActive(isNewHighscore);
-        gameOverHighscoreText.transform.DOPunchScale(Vector3.one*1.25f, 1).SetLoops(3);
+        gameOverHighscoreText.transform.DOPunchScale(Vector3.one * 1.25f, 1).SetLoops(3);
     }
 }
