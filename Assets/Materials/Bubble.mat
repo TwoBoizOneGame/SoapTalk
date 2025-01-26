@@ -10,14 +10,14 @@ Material:
   m_Name: Bubble
   m_Shader: {fileID: -6465566751694194690, guid: b939767ee42b81640a7425d193dc3e86, type: 3}
   m_Parent: {fileID: 2100000, guid: 96ed1e4f998fd3e4ea8a12b7f7988d27, type: 2}
-  m_ModifiedSerializedProperties: 0
+  m_ModifiedSerializedProperties: 10
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _ALPHAPREMULTIPLY_ON
   - _SURFACE_TYPE_TRANSPARENT
-  m_LightmapFlags: 4
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses:
@@ -27,8 +27,12 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _Fresnel: 3
+    - _Noise_Speed: 0.08
+    - _Smoothness: 0.75
+    m_Colors:
+    - _Base_Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &99130125412889056
