@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public WordParser wordParser;
     public GameObject environment;
 
+    public string[] currentSentence;
     List<Word> spawnedWords = new List<Word>();
 
     public Word currentlyDraggedWord;
@@ -42,39 +43,43 @@ public class GameManager : MonoBehaviour
     public float currentMovementSpeed = 1;
 
     public int currentScore = 0;
-    public int maxHealth=5;
-    public int currentHealth=5;
-    public int currentRound=1;
+    public int goldAmount = 0;
+    public int maxHealth = 5;
+    public int currentHealth = 5;
+    public int currentRound = 1;
 
     Vector3 totalDistanceToEndPoint;
 
     void Start()
     {
         _instance = this;
-        currentHealth=maxHealth;
+        currentHealth = maxHealth;
         currentState = GameState.Initial;
-        currentRound=1;
+        currentRound = 0;
         currentListener.SetupCharacter(CharacterRole.Listener);
         currentTalker.SetupCharacter(CharacterRole.Talker);
         wordParser.LoadSentences();
         GameUI.instance.SetHeartCount(currentHealth);
         GameUI.instance.UpdateScore(currentScore);
-        SpawnBubble();
+        StartNewRound();
 
 #if UNITY_EDITOR
         Debug.Log("Clearing up player prefs because we're running in the editor");
         PlayerPrefs.DeleteAll();
-        #endif
+#endif
     }
 
     void Update()
-    {    
-        var endArea = currentListener.GetEndAreaOffset();
-        var remainingDistance = endArea.x-bubble.rightEnd.transform.position.x;
-        var currentProgress = 1-(remainingDistance/totalDistanceToEndPoint.x);
-        var timeToEnd = remainingDistance/currentMovementSpeed;
+    {
+        if (bubble != null)
+        {
+            var endArea = currentListener.GetEndAreaOffset();
+            var remainingDistance = endArea.x - bubble.rightEnd.transform.position.x;
+            var currentProgress = 1 - (remainingDistance / totalDistanceToEndPoint.x);
+            var timeToEnd = remainingDistance / currentMovementSpeed;
 
-        GameUI.instance.UpdateProgress(currentProgress, timeToEnd);
+            GameUI.instance.UpdateProgress(currentProgress, timeToEnd);
+        }
         if (currentState == GameState.Moving)
         {
             environment.transform.position -= Vector3.right * currentMovementSpeed * Time.deltaTime;
@@ -87,8 +92,8 @@ public class GameManager : MonoBehaviour
                 if (wa != null && wa.currentlyHeldWord == null)
                 {
                     if (currentlyHoveredAnchor != null)
-                        currentlyHoveredAnchor.renderer.sharedMaterial = currentlyHoveredAnchor.defaultMaterial;
-                    wa.renderer.sharedMaterial = wa.hoverMaterial;
+                        currentlyHoveredAnchor.SetMaterials(currentlyHoveredAnchor.defaultMaterial);
+                    wa.SetMaterials(wa.hoverMaterial);
                     currentlyHoveredAnchor = wa;
                 }
             }
@@ -96,7 +101,7 @@ public class GameManager : MonoBehaviour
             {
                 if (currentlyHoveredAnchor != null)
                 {
-                    currentlyHoveredAnchor.renderer.sharedMaterial = currentlyHoveredAnchor.defaultMaterial;
+                    currentlyHoveredAnchor.SetMaterials(currentlyHoveredAnchor.defaultMaterial);
                     currentlyHoveredAnchor = null;
                 }
             }
@@ -139,14 +144,14 @@ public class GameManager : MonoBehaviour
 
     async void SpawnBubble()
     {
-        currentState=GameState.Blowing;
+        currentState = GameState.Blowing;
         currentTalker.SetBlowing(true);
         bubble = Instantiate(bubblePrefab, Vector3.zero, Quaternion.identity).GetComponent<Bubble>();
         var targetScale = bubble.transform.localScale;
-        bubble.transform.localScale=Vector3.zero;        
+        bubble.transform.localScale = Vector3.zero;
         await bubble.transform.DOScale(targetScale, 1).AsyncWaitForCompletion();
         currentTalker.SetBlowing(false);
-        totalDistanceToEndPoint=currentListener.GetEndAreaOffset()-bubble.rightEnd.transform.position;
+        totalDistanceToEndPoint = currentListener.GetEndAreaOffset() - bubble.rightEnd.transform.position;
         StartTalking();
     }
 
@@ -167,21 +172,26 @@ public class GameManager : MonoBehaviour
         currentTalker.SetIdlePose();
     }
 
+    string[] GenerateSentence()
+    {
+        var sentence = wordParser.sentences[Random.Range(0, wordParser.sentences.Count)];
+        var split = sentence.text.Split(' ');
+        return split;
+    }
+
     async UniTask SpawnSentence()
     {
         bubble.ClearDeformers();
         spawnedWords.Clear();
 
-        var sentence = wordParser.sentences[Random.Range(0, wordParser.sentences.Count)];
-        var split = sentence.text.Split(' ');
         List<Word> words = new();
-        foreach (var word in split)
+        foreach (var word in currentSentence)
         {
             var w = SpawnWord(word);
             w.gameObject.SetActive(false);
             words.Add(w);
         }
-        bubble.PrepareAnchors(words);
+        await bubble.PrepareAnchors(words);
         foreach (var word in words)
         {
             word.gameObject.SetActive(true);
@@ -190,6 +200,8 @@ public class GameManager : MonoBehaviour
             word.transform.position += word.transform.right * word.textMesh.preferredWidth;
             word.rigidbody2D.AddForce(bubble.wordInsertionPoint.forward * insertionStrength, ForceMode2D.Impulse);
             bubble.deformable.AddDeformer(word.GetComponentInChildren<Deformer>());
+            word.transform.localScale = Vector3.zero;
+            word.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
             await UniTask.WaitForSeconds(1);
         }
     }
@@ -197,10 +209,8 @@ public class GameManager : MonoBehaviour
     Word SpawnWord(string word)
     {
         var obj = Instantiate(wordPrefab, bubble.wordInsertionPoint.position, Quaternion.identity).GetComponent<Word>();
-        obj.transform.localScale = Vector3.zero;
         obj.Setup(word);
         spawnedWords.Add(obj);
-        obj.transform.DOScale(Vector3.one, .5f).SetEase(Ease.OutBounce);
         return obj;
     }
 
@@ -211,11 +221,11 @@ public class GameManager : MonoBehaviour
         if (currentlyDraggedWord != null)
         {
             currentlyDraggedWord.StopBeingDragged();
-            currentlyDraggedWord=null;
+            currentlyDraggedWord = null;
         }
 
         List<Word> wordsToProcess = new List<Word>(spawnedWords);
-        bool isPerfect=true;
+        bool isPerfect = true;
         foreach (var anchor in bubble.wordAnchors)
         {
             if (anchor.currentlyHeldWord != null)
@@ -226,14 +236,18 @@ public class GameManager : MonoBehaviour
                     anchor.currentlyHeldWord.transform.DOPunchScale(Vector3.one * 1.5f, 1);
                     await DOTween.To(() => anchor.currentlyHeldWord.textMesh.color, x => anchor.currentlyHeldWord.textMesh.color = x, Color.green, 1).AsyncWaitForCompletion();
                     GameUI.instance.UpdateScore(currentScore);
+                    if (anchor.currentlyHeldWord.appliedModificator != null)
+                    {
+                        anchor.currentlyHeldWord.appliedModificator.OnScore();
+                    }
                 }
                 else
                 {
                     await anchor.currentlyHeldWord.transform.DOScale(Vector3.one * 1.5f, 0.5f).AsyncWaitForCompletion();
                     DOTween.To(() => anchor.currentlyHeldWord.textMesh.color, x => anchor.currentlyHeldWord.textMesh.color = x, Color.red, 1);
                     await anchor.currentlyHeldWord.transform.DOShakeRotation(1f).AsyncWaitForCompletion();
-                    await anchor.currentlyHeldWord.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();                    
-                    isPerfect=false;
+                    await anchor.currentlyHeldWord.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();
+                    isPerfect = false;
                 }
             }
             anchor.transform.DOScale(0, .5f);
@@ -243,11 +257,11 @@ public class GameManager : MonoBehaviour
                 anchor.currentlyHeldWord.transform.DOScale(Vector3.zero, 1);
                 wordsToProcess.Remove(anchor.currentlyHeldWord);
             }
-            if (!isPerfect)
-            {
-                RemoveHeart();
-            }
             await UniTask.WaitForSeconds(1.5f);
+        }
+        if (!isPerfect)
+        {
+            RemoveHeart();
         }
 
         foreach (var word in wordsToProcess)
@@ -255,10 +269,15 @@ public class GameManager : MonoBehaviour
             DOTween.To(() => word.textMesh.color, x => word.textMesh.color = x, Color.red, 1);
             word.transform.DOScale(Vector3.zero, 1);
         }
+        if (currentHealth > 0)
+        {
+            currentListener.SetWin(true);
+        }
         await bubble.transform.DOScale(0, .5f).SetEase(Ease.InOutExpo).AsyncWaitForCompletion();
         bubble.DestroyBubble();
         if (currentHealth > 0)
         {
+            currentListener.SetWin(false);
             StartNewRound();
         }
     }
@@ -266,17 +285,23 @@ public class GameManager : MonoBehaviour
     async void StartNewRound()
     {
         currentState = GameState.Initial;
-        
-        await environment.transform.DOMoveX(environment.transform.position.x-currentListener.bubbleSpawnOffset.position.x, 1).AsyncWaitForCompletion();
-        currentTalker.transform.position = currentListener.transform.position + Vector3.right*Random.Range(60, 120);
+        currentSentence = GenerateSentence();
+        if (currentRound > 0)
+        {
+            await environment.transform.DOMoveX(environment.transform.position.x - currentListener.bubbleSpawnOffset.position.x, 1).AsyncWaitForCompletion();
+            var temp = currentTalker;
+            currentTalker = currentListener;
+            currentListener = temp;
+            GameUI.instance.SwapRTs();
+        }
 
-        var temp = currentTalker;
-        currentTalker = currentListener;
-        currentListener = temp;
-        currentTalker.name = "Talker";
-        currentTalker.SetRole(CharacterRole.Talker);
+        var dist = currentSentence.Length * 5 * currentMovementSpeed;
+        var minimumOffset = 5;
         currentListener.name = "Listener";
         currentListener.SetupCharacter(CharacterRole.Listener);
+        currentListener.transform.position = currentTalker.transform.position + Vector3.right * (minimumOffset + dist);
+        currentTalker.name = "Talker";
+        currentTalker.SetRole(CharacterRole.Talker);
         currentTalker.SetIdlePose();
         currentListener.SetIdlePose();
         currentRound++;
@@ -287,9 +312,9 @@ public class GameManager : MonoBehaviour
 
     public void RemoveHeart()
     {
-        currentHealth = Mathf.Max(currentHealth-1, 0);
+        currentHealth = Mathf.Max(currentHealth - 1, 0);
         if (currentHealth == 0)
-        {            
+        {
             EndGame();
         }
         GameUI.instance.SetHeartCount(currentHealth);
@@ -299,7 +324,8 @@ public class GameManager : MonoBehaviour
     {
         if (currentState == GameState.GameOver) return;
 
-        currentState=GameState.GameOver;
+        currentState = GameState.GameOver;
+        currentListener.SetFail(true);
         var maxScore = PlayerPrefs.GetInt(HIGHSCORE_KEY, 0);
         if (currentScore > maxScore)
         {
@@ -312,7 +338,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
-    
+
     public void Quit()
     {
         SceneManager.LoadScene(0);

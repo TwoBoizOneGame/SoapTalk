@@ -28,6 +28,11 @@ public class GameUI : MonoBehaviour
     public TextMeshProUGUI gameOverPopupText;
     public TextMeshProUGUI gameOverHighscoreText;
 
+    public RawImage talkerImage;
+    public RawImage listenerImage;
+    public RenderTexture talkerRt;
+    public RenderTexture listenerRT;
+
     void Awake()
     {
         _instance = this;
@@ -49,6 +54,14 @@ public class GameUI : MonoBehaviour
     {
         progressSlider.value = value;
         progressText.text = $"{Mathf.Round(timeLeft)} seconds";
+    }
+
+    public void SwapRTs()
+    {
+        var left = talkerImage.texture == talkerRt ? talkerRt : listenerRT;
+        var right = listenerImage.texture == listenerRT ? listenerRT : talkerRt;
+        talkerImage.texture = right;
+        listenerImage.texture=left;
     }
 
     public async UniTask ShowGoText()
@@ -88,7 +101,7 @@ public class GameUI : MonoBehaviour
     public void ShowGameOverScreen(bool isNewHighscore)
     {
         gameOverPopup.SetActive(true);
-        gameOverPopupText.text = $"Score {GameManager.instance.currentScore}";
+        gameOverPopupText.text = $"Score: {GameManager.instance.currentScore}";
         gameOverHighscoreText.gameObject.SetActive(isNewHighscore);
         gameOverHighscoreText.transform.DOPunchScale(Vector3.one*1.25f, 1).SetLoops(3);
     }

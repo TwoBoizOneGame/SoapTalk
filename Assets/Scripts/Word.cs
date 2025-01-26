@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using Deform;
 using TMPro;
-using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,12 +17,25 @@ public class Word : MonoBehaviour
     public Color normalColor = Color.white;
 
     public WordAnchor relatedAnchor;
+    public GameObject modificatorIcon;
+    
+    public List<ModificatorBase> availableModificators;
+    public ModificatorBase appliedModificator;
+    public float modificatorChance;
 
     public void Setup(string word)
     {
         textMesh.text = word;        
         boxCollider2D.size = new Vector2(Mathf.Min(1, textMesh.preferredWidth), Mathf.Min(1, textMesh.preferredHeight));
         this.name = $"Word ({word})";
+
+        if (Random.value < modificatorChance)
+        {
+            var mod = availableModificators[Random.Range(0, 1)];
+            appliedModificator = mod;
+            modificatorIcon.gameObject.SetActive(true);
+            mod.Setup(this);
+        }
     }
 
     Vector3 previousPos;

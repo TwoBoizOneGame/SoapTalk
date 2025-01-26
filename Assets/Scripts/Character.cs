@@ -10,6 +10,10 @@ public class Character : MonoBehaviour
     string listeningAnimationVariable;
     [SerializeField]
     string blowingAnimationVariable;
+    [SerializeField]
+    string failAnimationVariable;
+    [SerializeField]
+    string winAnimationVariable;
 
     [SerializeField]
     Animator animator;
@@ -53,6 +57,16 @@ public class Character : MonoBehaviour
     public void SetBlowing(bool blowing)
     {
         animator.SetBool(blowingAnimationVariable, blowing);
+    }
+
+    public void SetWin(bool win)
+    {
+        animator.SetBool(winAnimationVariable, win);
+    }
+
+    public void SetFail(bool fail)
+    {
+        animator.SetBool(failAnimationVariable, fail);
     }
 
     public void SetIdlePose()
