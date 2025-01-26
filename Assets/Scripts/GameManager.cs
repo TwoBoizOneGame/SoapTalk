@@ -352,6 +352,7 @@ public class GameManager : MonoBehaviour
         }
         spawnedWords.Clear();
 
+        GameUI.instance.SetCardDrawerVisibility(false);
         currentState = GameState.Initial;
         currentMovementSpeed = defaultMovementSpeed;
         currentSentence = GenerateSentence();
@@ -389,6 +390,7 @@ public class GameManager : MonoBehaviour
         }
         availableCards.Clear();
         GameUI.instance.cardsContainer.RemoveChildren();
+        if (currentRound == 1) return;
 
         for (int i = 0; i < maxCardsAvailable; i++)
         {
