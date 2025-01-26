@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualization: {fileID: 5953923959367203747, guid: c3ebabda13a90b242b3af1b11a52e392, type: 3}
   word: {fileID: 0}
-  rarity: 0.45
+  rarity: 0.2
   isNegative: 1
   jumpStrength: 100

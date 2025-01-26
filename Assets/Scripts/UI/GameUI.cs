@@ -39,6 +39,7 @@ public class GameUI : MonoBehaviour
 
     public CardInfoUI cardInfoUI;
 
+    public GameObject pauseScreen;    
 
     void Awake()
     {
@@ -152,5 +153,21 @@ public class GameUI : MonoBehaviour
         gameOverPopupText.text = $"Score: {GameManager.instance.currentScore}";
         gameOverHighscoreText.gameObject.SetActive(isNewHighscore);
         gameOverHighscoreText.transform.DOPunchScale(Vector3.one * 1.25f, 1).SetLoops(3);
+    }
+
+    public void TogglePauseScreen(bool visible)
+    {
+        pauseScreen.SetActive(visible);
+        if (visible) PauseGame();
+    }
+
+    public void PauseGame()
+    {
+        GameManager.instance.PauseGame();
+    }
+    public void ResumeGame()
+    {
+        GameManager.instance.ResumeGame();
+        TogglePauseScreen(false);
     }
 }

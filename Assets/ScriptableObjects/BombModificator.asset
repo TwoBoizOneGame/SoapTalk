@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualization: {fileID: 5207234350886720728, guid: 6fc7ea482b3648b41b9f159016132ff4, type: 3}
   word: {fileID: 0}
-  rarity: 1
+  rarity: 0.1
   isNegative: 1
+  explosionDelayRange: {x: 5, y: 9}
   explosionDelay: 5

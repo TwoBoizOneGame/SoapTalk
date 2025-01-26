@@ -22,6 +22,8 @@ public class Word : MonoBehaviour
 
     public List<ModificatorBase> availableModificators;
     public ModificatorBase appliedModificator;
+    public SpriteMask appliedModificatorSpriteMask;
+    public SpriteRenderer appliedModificatorSpriteRenderer;
 
     public bool canBePickedUp=true;
 

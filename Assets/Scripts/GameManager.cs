@@ -78,7 +78,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (bubble != null)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameUI.instance.TogglePauseScreen(!GameUI.instance.pauseScreen.activeInHierarchy);
+        }
+
+        if (bubble != null && currentState == GameState.Moving || currentState == GameState.Talking)
         {
             var endArea = currentListener.GetEndAreaOffset();
             var remainingDistance = endArea.x - bubble.rightEnd.transform.position.x;
@@ -93,24 +98,38 @@ public class GameManager : MonoBehaviour
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 50, Color.red, 5);
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            if (currentlyDraggedWord != null)
             {
-                var wa = hit.collider.GetComponentInParent<WordAnchor>();
-                if (wa != null && wa.currentlyHeldWord == null)
+                if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     if (currentlyHoveredAnchor != null)
+                    {
                         currentlyHoveredAnchor.SetMaterials(currentlyHoveredAnchor.defaultMaterial);
-                    wa.SetMaterials(wa.hoverMaterial);
-                    currentlyHoveredAnchor = wa;
+                        currentlyHoveredAnchor = null;
+                    }
+                    var wa = hit.collider.GetComponentInParent<WordAnchor>();
+                    if (wa != null && wa.currentlyHeldWord == null)
+                    {                        
+                        wa.SetMaterials(wa.hoverMaterial);
+                        currentlyHoveredAnchor = wa;
+                    }
+                }
+                else
+                {
+                    if (currentlyHoveredAnchor != null)
+                    {
+                        currentlyHoveredAnchor.SetMaterials(currentlyHoveredAnchor.defaultMaterial);
+                        currentlyHoveredAnchor = null;
+                    }
                 }
             }
             else
             {
-                if (currentlyHoveredAnchor != null)
-                {
-                    currentlyHoveredAnchor.SetMaterials(currentlyHoveredAnchor.defaultMaterial);
-                    currentlyHoveredAnchor = null;
-                }
+                    if (currentlyHoveredAnchor != null)
+                    {
+                        currentlyHoveredAnchor.SetMaterials(currentlyHoveredAnchor.defaultMaterial);
+                        currentlyHoveredAnchor = null;
+                    }
             }
 
             foreach (var word in spawnedWords)
@@ -403,5 +422,15 @@ public class GameManager : MonoBehaviour
         var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Gizmos.color = Color.red;
         Gizmos.DrawCube(pos, Vector3.one * .5f);
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 }

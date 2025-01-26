@@ -26,13 +26,19 @@ public class BombModificator : ModificatorBase
 
     public override void OnUpdate()
     {
-        if (isActive && Time.time > startTime+explosionDelay)
+        if (isActive)
         {
+            var lerpValue=(Time.time-startTime)/explosionDelay;
+            word.appliedModificatorSpriteMask.alphaCutoff=1-lerpValue;
+            word.appliedModificatorSpriteRenderer.color = Color.Lerp(Color.white, Color.red, lerpValue);
+            if (Time.time > startTime+explosionDelay)
+            {
             if (GameManager.instance.currentState == GameState.Moving)
             {
                 isActive=false;
                 word.canBePickedUp=false;
                 Explode();
+            }
             }
         }
         base.OnUpdate();
@@ -42,6 +48,11 @@ public class BombModificator : ModificatorBase
     {
         await word.modificatorIcon.transform.DOScale(Vector3.one*5, 0.5f).AsyncWaitForCompletion();
         AudioManager.instance.PlayOneShotAsync(AudioManager.instance.explosionSounds);
+        if (GameManager.instance.currentlyDraggedWord == word)
+        {
+            word.StopBeingDragged();
+            GameManager.instance.currentlyDraggedWord=null;
+        }
         word.gameObject.SetActive(false);
     }
 

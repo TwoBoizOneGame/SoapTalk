@@ -61,7 +61,9 @@ MonoBehaviour:
   popSounds:
   - {fileID: 8300000, guid: 8e5f5a200c7656a4e8cb4819c3553324, type: 3}
   - {fileID: 8300000, guid: b666ebcd3c7535449abb116b0bc5f5ef, type: 3}
-  spawnAnchorSounds: []
+  spawnAnchorSounds:
+  - {fileID: 8300000, guid: 8e5f5a200c7656a4e8cb4819c3553324, type: 3}
+  - {fileID: 8300000, guid: b666ebcd3c7535449abb116b0bc5f5ef, type: 3}
   whooshSounds:
   - {fileID: 8300000, guid: d3c598914439a5a4f8f1e4ccc1ffb2d1, type: 3}
   - {fileID: 8300000, guid: 17f999b22b23aa04ebeffe2a716f9f7e, type: 3}

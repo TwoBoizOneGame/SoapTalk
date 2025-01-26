@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualization: {fileID: 6189145664669377941, guid: ac940f9485ef5144698cc80bd86d443a, type: 3}
   word: {fileID: 0}
-  rarity: 0.5
+  rarity: 0.3
   isNegative: 0
   goldAmount: 0
   soundOnScore: {fileID: 0}

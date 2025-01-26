@@ -34,11 +34,16 @@ public class AudioManager : MonoBehaviour
     {
         var sfx = PlayOneShot(clip,false);     
         await UniTask.WaitForSeconds(clip.length);
-        Destroy(sfx);
+        Destroy(sfx.gameObject);
     }
 
     public async UniTask PlayOneShotAsync(AudioClip[] audioClips)
     {
+        if (audioClips.Length == 0)
+        {
+            Debug.LogWarning($"NO AUDIO TO PLAY");
+            return;
+        }
         await PlayOneShotAsync(audioClips[Random.Range(0, audioClips.Length)]);
     }
 

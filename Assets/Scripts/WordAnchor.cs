@@ -30,6 +30,7 @@ public class WordAnchor : MonoBehaviour
         center.transform.localScale = new Vector3(width, transform.localScale.y, transform.localScale.z);
         var xSize = center.transform.localScale.x+center.transform.localPosition.x;
         rightCorner.transform.localPosition = new Vector3(xSize, rightCorner.transform.localPosition.y,rightCorner.transform.localPosition.z);
+        xSize =GetXSize();
         placementArea.size = new Vector3(xSize, 1, 1);
         placementArea.center = new Vector3(xSize/2,placementArea.center.y, placementArea.center.z);
         name = $"WordAnchor (w={GetXSize()})";
