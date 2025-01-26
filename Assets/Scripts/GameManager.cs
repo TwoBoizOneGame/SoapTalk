@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     public GameObject environment;
 
     public string[] currentSentence;
+    public Sentence lastUsedSentence;
     public List<Word> spawnedWords = new List<Word>();
 
     public Word currentlyDraggedWord;
@@ -216,6 +217,7 @@ public class GameManager : MonoBehaviour
         string[] split;
         do {
          sentence = wordParser.sentences[Random.Range(0, wordParser.sentences.Count)];
+         if (sentence == lastUsedSentence) continue;
          split = sentence.text.Split(' ');
          if (currentRound > easyRounds) break;
          else
@@ -223,6 +225,7 @@ public class GameManager : MonoBehaviour
             if (split.Length <= maxWordsInEasyRound) break;
          }
         } while (true);
+        lastUsedSentence = sentence;
         return split;
     }
 
