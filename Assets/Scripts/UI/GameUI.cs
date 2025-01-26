@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -118,9 +117,9 @@ public class GameUI : MonoBehaviour
         goText.transform.localScale = Vector3.zero;
         goText.gameObject.SetActive(true);
         goText.transform.DOScale(Vector3.one * 3, 2).SetEase(Ease.OutCubic);
-        await DOTween.To(() => goText.color.a, (x) => goText.color = goText.color.WithAlpha(x), 0, 2).AsyncWaitForCompletion();
+        await DOTween.To(() => goText.color.a, (x) => goText.color = new Color(goText.color.r, goldText.color.g, goText.color.b, x), 0, 2).AsyncWaitForCompletion();
         goText.gameObject.SetActive(false);
-        goText.color = goText.color.WithAlpha(1);
+        goText.color = new Color(goText.color.r, goldText.color.g, goText.color.b, 1);
     }
 
     public async void SetHeartCount(int heartCount)
