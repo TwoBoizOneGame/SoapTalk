@@ -394,7 +394,7 @@ MonoBehaviour:
   currentHealth: 5
   currentRound: 1
   easyRounds: 3
-  maxWordsInEasyRound: 9
+  maxWordsInEasyRound: 4
   allCards:
   - {fileID: 11400000, guid: 125a3637c8aee48b0ab12f67bbf43e35, type: 2}
   - {fileID: 11400000, guid: 7a85c3bcb9d064c998b5ea2001f3c5de, type: 2}
@@ -1465,6 +1465,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7754364983453430863, guid: 7cd4f29340578497a9a225c0adf983f6, type: 3}
+      propertyPath: 'stretchSounds.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: f986d5f6fa592254cb2bf8dea87f1609, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

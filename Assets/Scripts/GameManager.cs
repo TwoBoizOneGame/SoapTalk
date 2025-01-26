@@ -180,7 +180,6 @@ public class GameManager : MonoBehaviour
         bubble = Instantiate(bubblePrefab, Vector3.zero, Quaternion.identity).GetComponent<Bubble>();
         var targetScale = bubble.transform.localScale;
         bubble.transform.localScale = Vector3.zero;
-        AudioManager.instance.PlayOneShotAsync(AudioManager.instance.stretchSounds);
         await bubble.transform.DOScale(targetScale, 1).AsyncWaitForCompletion();
         currentTalker.SetBlowing(false);
         totalDistanceToEndPoint = currentListener.GetEndAreaOffset() - bubble.rightEnd.transform.position;
@@ -365,8 +364,8 @@ public class GameManager : MonoBehaviour
             GameUI.instance.SwapRTs();
         }
 
-        var dist = currentSentence.Length * 5 * currentMovementSpeed;
-        var minimumOffset = 30;
+        var dist = currentSentence.Length * 5 * defaultMovementSpeed;
+        var minimumOffset = 15;
         currentListener.name = "Listener";
         currentListener.SetupCharacter(CharacterRole.Listener);
         currentListener.transform.position = currentTalker.transform.position + Vector3.right * (minimumOffset + dist);

@@ -47,7 +47,6 @@ public class Bubble : MonoBehaviour
                 lineCount++;
             }
             anchor.transform.position = currentPoint;
-            AudioManager.instance.PlayOneShotAsync(AudioManager.instance.spawnAnchorSounds);
             currentPoint += new Vector2(xSize + anchorSeparation.x, 0);
             wordAnchors.Add(anchor);
         }
@@ -60,6 +59,7 @@ public class Bubble : MonoBehaviour
         }
         foreach (var anchor in wordAnchors)
         {
+            AudioManager.instance.PlayOneShotAsync(AudioManager.instance.spawnAnchorSounds);
             await anchor.transform.DOScale(Vector3.one, 0.5f).AsyncWaitForCompletion();
         }
     }
