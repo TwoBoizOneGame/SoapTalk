@@ -510,8 +510,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 770.92975, y: -129.26}
-  m_SizeDelta: {x: 320.13992, y: 258.52}
+  m_AnchoredPosition: {x: 770.92993, y: -129.26}
+  m_SizeDelta: {x: 320.13995, y: 258.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &195017072
 MonoBehaviour:
@@ -933,7 +933,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1692060174}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.26752752
+  m_Size: 0.2675275
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1118,8 +1118,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 501.49988, y: -445.585}
-  m_SizeDelta: {x: 930.99976, y: 819.17}
+  m_AnchoredPosition: {x: 501.49994, y: -456.56}
+  m_SizeDelta: {x: 930.9999, y: 841.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &423993140
 MonoBehaviour:
@@ -1141,9 +1141,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "SOAP TALK\nby\ntwo boiz one game\n\nIvan vakulko - 2d/3d art, game design\nGracjan
-    puch - programming, game design\n\n+ Pierre Duyker - music & sfx\n\nmade at hackjam
-    @ hackerspace tr\xF3jmiasto 2025 + Global Game JAm 2025\n\n"
+  m_text: "<color=#ff5399>SOAP</color> <color=#42d6ff>TALK</color>\nby two boiz one
+    game\n\n<color=#42d6ff>Ivan vakulko</color>\n2d/3d art, game design\n\n<color=#42d6ff>Gracjan
+    puch</color>\nprogramming, game design\n\n<color=#42d6ff>Pierre Duyker</color>\nmusic
+    & sfx\n\nmade at hackjam @ hackerspace tr\xF3jmiasto 2025 + Global Game JAm 2025\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 703ad0c7b9d8a4ed8868a8c641141fb3, type: 2}
   m_sharedMaterial: {fileID: -8410991266874467002, guid: 703ad0c7b9d8a4ed8868a8c641141fb3, type: 2}
@@ -1170,14 +1171,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
-  m_fontSizeBase: 48
+  m_fontSize: 46
+  m_fontSizeBase: 46
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 16
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1504,8 +1505,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 458.14484, y: -129.26}
-  m_SizeDelta: {x: 305.4299, y: 258.52}
+  m_AnchoredPosition: {x: 458.14496, y: -129.26}
+  m_SizeDelta: {x: 305.42996, y: 258.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &573653669
 MonoBehaviour:
@@ -1584,7 +1585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.96887654, g: 0.0047169924, b: 1, a: 0.62352943}
+  m_Color: {r: 0.5471698, g: 0, b: 0.14317329, a: 0.62352943}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1721,7 +1722,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 152.71495, y: -100}
+  m_AnchoredPosition: {x: 152.71498, y: -100}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &666545739
@@ -2204,7 +2205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 152.71495, y: -100}
+  m_AnchoredPosition: {x: 152.71498, y: -100}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &904879893
@@ -2679,7 +2680,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160.06996, y: -229.26}
+  m_AnchoredPosition: {x: 160.06998, y: -229.26}
   m_SizeDelta: {x: 214.71, y: 58.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1003271534
@@ -2711,8 +2712,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190328
+  m_fontColor: {r: 0.9716981, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2832,7 +2833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.96887654, g: 0.0047169924, b: 1, a: 0.62352943}
+  m_Color: {r: 0.54901963, g: 0, b: 0.14509805, a: 0.62352943}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2891,8 +2892,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 501.49988, y: -2538.2249}
-  m_SizeDelta: {x: 930.99976, y: 1579.83}
+  m_AnchoredPosition: {x: 501.49994, y: -2538.2249}
+  m_SizeDelta: {x: 930.9999, y: 1579.83}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1071353017
 MonoBehaviour:
@@ -2914,17 +2915,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'WHEN YOU HAVE ENOUGH GOLD YOU CAN BUY SPECIAL CARDS
+  m_text: 'WHEN YOU HAVE ENOUGH <color=yellow>GOLD</color> YOU CAN BUY SPECIAL CARDS
 
 
-    YOU ARE GIVEN
-    TWO CARDS TO BUY EACH ROUND
+    YOU
+    ARE GIVEN TWO CARDS TO BUY EACH ROUND
 
-    READ THEIR DESCRIPTIONS, THEY CAN HELP YOU
+    READ THEIR DESCRIPTIONS, THEY CAN
+    HELP YOU
 
 
-    THATS
-    ALL
+    THATS ALL
 
 
 
@@ -2943,8 +2944,8 @@ MonoBehaviour:
 
 
 
-    PLAY THE GAME
-    ALREADYYY!'
+    PLAY
+    THE GAME ALREADYYY!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 703ad0c7b9d8a4ed8868a8c641141fb3, type: 2}
   m_sharedMaterial: {fileID: -8410991266874467002, guid: 703ad0c7b9d8a4ed8868a8c641141fb3, type: 2}
@@ -3454,8 +3455,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 152.71495, y: -129.26}
-  m_SizeDelta: {x: 305.4299, y: 258.52}
+  m_AnchoredPosition: {x: 152.71497, y: -129.26}
+  m_SizeDelta: {x: 305.42996, y: 258.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1196779267
 MonoBehaviour:
@@ -3781,7 +3782,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 891.17}
+  m_SizeDelta: {x: 0, y: 913.12}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1287363734
 MonoBehaviour:
@@ -3857,7 +3858,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 152.71495, y: -229.26}
+  m_AnchoredPosition: {x: 152.71498, y: -229.26}
   m_SizeDelta: {x: 146.88, y: 58.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1418971972
@@ -3889,8 +3890,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278247418
+  m_fontColor: {r: 0.9811321, g: 0.87255317, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4041,8 +4042,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1639355319}
   m_HandleRect: {fileID: 1639355318}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.99999535
+  m_Size: 0.98563164
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4194,8 +4195,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 202810983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0.014368288}
+  m_AnchorMax: {x: 1, y: 0.99999994}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4271,8 +4272,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 501.49988, y: -1419.7449}
-  m_SizeDelta: {x: 930.99976, y: 585.13}
+  m_AnchoredPosition: {x: 501.49994, y: -1419.7449}
+  m_SizeDelta: {x: 930.9999, y: 585.13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1648498058
 MonoBehaviour:
@@ -4294,15 +4295,15 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'GOLD GIVES YOU CURRENCY TO USE CARDS
+  m_text: '<color=yellow>GOLD</color> GIVES YOU CURRENCY TO USE CARDS
 
 
-    BOMB DESTROYS THE WORD WHEN
-    COUNTER REACHES ZERO
+    <color=black>BOMB</color>
+    DESTROYS THE WORD WHEN COUNTER REACHES ZERO
 
 
-    JUMPER MAKES THE WORD JUMP OUT OF THE BUCKET AND YOU
-    HAVE TO PUT IT IN AGAIN (ONLY ONCE)'
+    <color=red>JUMPER</color>MAKES
+    THE WORD JUMP OUT OF THE BUCKET AND YOU HAVE TO PUT IT IN AGAIN (ONLY ONCE)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 703ad0c7b9d8a4ed8868a8c641141fb3, type: 2}
   m_sharedMaterial: {fileID: -8410991266874467002, guid: 703ad0c7b9d8a4ed8868a8c641141fb3, type: 2}
@@ -4630,7 +4631,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1856267267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.7324725}
+  m_AnchorMin: {x: 0, y: 0.73247254}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -5164,7 +5165,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160.06996, y: -100}
+  m_AnchoredPosition: {x: 160.06998, y: -100}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1828531821
@@ -5297,8 +5298,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 501.49988, y: -961.92}
-  m_SizeDelta: {x: 930.99976, y: 258.52}
+  m_AnchoredPosition: {x: 501.49994, y: -961.92}
+  m_SizeDelta: {x: 930.9999, y: 258.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1868103956
 MonoBehaviour:
@@ -5567,7 +5568,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 152.71495, y: -229.26}
+  m_AnchoredPosition: {x: 152.71498, y: -229.26}
   m_SizeDelta: {x: 160.7, y: 58.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2038629314
@@ -5599,8 +5600,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5703,8 +5704,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 501.49988, y: -416.33}
-  m_SizeDelta: {x: 930.99976, y: 760.66}
+  m_AnchoredPosition: {x: 501.49994, y: -416.33}
+  m_SizeDelta: {x: 930.9999, y: 760.66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2132907489
 MonoBehaviour:
@@ -5771,7 +5772,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 16
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
