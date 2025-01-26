@@ -366,7 +366,7 @@ public class GameManager : MonoBehaviour
         }
 
         var dist = currentSentence.Length * 5 * defaultMovementSpeed;
-        var minimumOffset = 15;
+        var minimumOffset = 10;
         currentListener.name = "Listener";
         currentListener.SetupCharacter(CharacterRole.Listener);
         currentListener.transform.position = currentTalker.transform.position + Vector3.right * (minimumOffset + dist);

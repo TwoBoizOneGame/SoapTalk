@@ -640,9 +640,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Win
     m_EventTreshold: 0
-  - m_ConditionMode: 1
-    m_ConditionEvent: Listener
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2089593285730611079}
   m_Solo: 0
@@ -880,9 +877,6 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: Lose
-    m_EventTreshold: 0
-  - m_ConditionMode: 1
-    m_ConditionEvent: Listener
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -468584893233019533}

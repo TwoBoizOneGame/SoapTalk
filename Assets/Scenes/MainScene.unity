@@ -390,8 +390,8 @@ MonoBehaviour:
   currentMovementSpeed: 1
   currentScore: 0
   goldAmount: 0
-  maxHealth: 5
-  currentHealth: 5
+  maxHealth: 3
+  currentHealth: 3
   currentRound: 1
   easyRounds: 3
   maxWordsInEasyRound: 4
